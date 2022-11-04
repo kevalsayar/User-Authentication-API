@@ -1,0 +1,46 @@
+[
+    {
+        "code": 200,
+        "status": true,
+        "message": "Data Fetched!",
+        "data": {
+            "uuid": "5a538281-0fa0-4ca5-bbf3-1b4b5f02983a",
+            "name": "anu",
+            "age": 16,
+            "company": "IBM"
+        }
+    },
+    {
+        "code": 200,
+        "status": true,
+        "message": "Data Fetched!",
+        "data": {
+            "uuid": "031e277e-9b3a-41ce-8dbd-494471db875d",
+            "name": "kev",
+            "age": 19,
+            "company": "GV"
+        }
+    },
+    {
+        "code": 200,
+        "status": true,
+        "message": "Data Fetched!",
+        "data": {
+            "uuid": "cfa7f5b0-d0df-4ecb-a739-8a39e94a2003",
+            "name": "steve",
+            "age": 24,
+            "company": "Google"
+        }
+    },
+    {
+        "code": 200,
+        "status": true,
+        "message": "Data Fetched!",
+        "data": {
+            "uuid": "6f73bbe3-365d-4801-adc3-62635de210fd",
+            "name": "abc",
+            "age": 20,
+            "company": "MNC"
+        }
+    }
+]
