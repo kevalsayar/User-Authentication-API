@@ -1,15 +1,14 @@
 const router = require("express").Router();
+const { auth } = require("../middleware/auth.middleware");
 const {
   addNumbers,
   multiplyNumbers,
   divideNumbers,
   subtractNumber,
-  getUserData,
-  personDetails,
-  getPersonDetails
+  registerUser,
+  getPersonDetails,
+  userLogin
 } = require("./calculation.handlers");
-
-// router.get("/query", getUserData)
 
 router.post("/sum", addNumbers);
 
@@ -19,8 +18,10 @@ router.post("/divide", divideNumbers);
 
 router.post("/subtract", subtractNumber);
 
-router.get("/details/:uuid?", getPersonDetails)
+router.get("/details/:uuid?", [auth], getPersonDetails)
 
-router.post('/details', personDetails)
+router.post('/register', registerUser)
+
+router.post('/login', userLogin)
 
 module.exports = router;

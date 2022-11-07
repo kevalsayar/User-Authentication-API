@@ -1,4 +1,5 @@
-const { showResponse } = require("../common/helper");
+const { showResponse, generateHash, signAndGet } = require("../common/helper");
+const { UserModel, PersistentTokenModel } = require("./calculation.queries");
 const { REQUEST_CODE, Messages, STATUS } = require("../common/members");
 const { v4: uuidv4 } = require("uuid");
 const { readFile } = require("../common/helper");
@@ -8,7 +9,7 @@ const add = function (userInfo) {
   if (!first || !second) {
     return showResponse(
       REQUEST_CODE.BAD_REQUEST,
-      STATUS.STATUS.FALSE,
+      STATUS.FALSE,
       Messages.calculate.error["insufficient-numbers"]
     );
   }
@@ -83,58 +84,97 @@ const divide = function (userInfo) {
   );
 };
 
-const getData = async function (info) {
-  const { uuid } = info;
-  return await readFile(uuid);
-};
-
-const addPersonDetails = function (userInfo) {
-  const { name, age, company } = userInfo;
-  return showResponse(
-    REQUEST_CODE.SUCCESS,
-    STATUS.TRUE,
-    Messages.data.success,
-    {
-      uuid: uuidv4(),
-      name: name,
-      age: age,
-      company: company,
-    }
-  );
+const addUser = async function (userInfo) {
+  const { name, age, company, password, email } = userInfo;
+  const isExist = await UserModel.checkExistance("email", email);
+  if (!isExist) {
+    userInfo.password = generateHash(userInfo.password);
+    await UserModel.create(userInfo);
+    return showResponse(
+      REQUEST_CODE.SUCCESS,
+      STATUS.TRUE,
+      Messages.data.success,
+      {
+        name: name,
+        age: age,
+        company: company,
+        email: email,
+        password: password,
+      }
+    );
+  } else {
+    return showResponse(
+      REQUEST_CODE.BAD_REQUEST,
+      STATUS.FALSE,
+      Messages.user["user-exists"]
+    );
+  }
 };
 
 const getUserDetails = async function (userInfo) {
-  const data = await readFile("userDetails");
   const { uuid } = userInfo;
   if (uuid) {
-    const singleUser = data.data.filter(
-      (user) => user.data.uuid === (uuid)
-    )
-    console.log(singleUser);
-    if (singleUser === []) {
+    const isExist = await UserModel.checkExistance("id", uuid);
+    if (!isExist) {
       return showResponse(
         REQUEST_CODE.BAD_REQUEST,
         STATUS.FALSE,
-        Messages.data.error,
+        Messages.user["uuid-does-not-exist"]
       );
     } else {
       return showResponse(
         REQUEST_CODE.SUCCESS,
         STATUS.TRUE,
         Messages.data.success,
-        singleUser[0].data
+        isExist
       );
     }
   } else {
-    const arr = [];
-    for (data1 in data.data) {
-      arr.push(data.data[data1].data);
-    }
     return showResponse(
       REQUEST_CODE.SUCCESS,
       STATUS.TRUE,
       Messages.data.success,
-      arr
+      await UserModel.getAllUsers()
+    );
+  }
+};
+
+const confirmCreds = async function (userInfo) {
+  const { email, password } = userInfo;
+  // Validate user input
+  if (!(email && password)) {
+    return showResponse(
+      REQUEST_CODE.BAD_REQUEST,
+      STATUS.FALSE,
+      Messages.user["email-password-both-necessary"]
+    );
+  }
+  const isExist = await UserModel.checkExistance("email", email);
+  if (!isExist) {
+    return showResponse(
+      REQUEST_CODE.BAD_REQUEST,
+      STATUS.FALSE,
+      Messages.user["no-user-found"]
+    );
+  } else if (isExist.dataValues["password"] === generateHash(password)) {
+    const { token, publicKey } = await signAndGet({
+      id: isExist.dataValues.id,
+    });
+    const result = await PersistentTokenModel.addNewUserToken(token, publicKey);
+    if (result){
+      return showResponse(
+        REQUEST_CODE.SUCCESS,
+        STATUS.TRUE,
+        Messages.user["login-success"],
+        {token}
+      );
+    }
+    
+  } else if (isExist.dataValues["password"] !== generateHash(password)) {
+    return showResponse(
+      REQUEST_CODE.BAD_REQUEST,
+      STATUS.FALSE,
+      Messages.user["wrong-password"]
     );
   }
 };
@@ -144,7 +184,7 @@ module.exports = {
   multiply,
   subtract,
   divide,
-  getData,
-  addPersonDetails,
+  addUser,
   getUserDetails,
+  confirmCreds,
 };

@@ -13,6 +13,14 @@ const Messages = {
     "data" : {
         "success" : "Data Fetched!",
         "error" : "Error Faced!"
+     },
+     "user" : {
+        "uuid-does-not-exist" : "uuid does not exist, try again!",
+        "no-user-found" : "User email not found!",
+        "login-success" : "Login completed successfully!",
+        "wrong-password" : "Please enter the right password!",
+        "email-password-both-necessary" : "Please enter both, email and password!",
+        "user-exists" : "User already exists, Please login!"
      }
 }
 
