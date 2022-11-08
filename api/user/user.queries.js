@@ -65,8 +65,9 @@ const UserQueries = function () {
 };
 
 const PersistentTokensQueries = function () {
-  const addNewUserToken = async function (token, publicKey) {
+  const addNewUserToken = async function (token, publicKey, uuid) {
     const results = await PersistentTokensModel.create({
+      uuid: uuid,
       jwt: token,
       publicKey: publicKey,
     });

@@ -25,6 +25,10 @@ const User = db.define("user", {
 });
 
 const PersistentTokensModel = db.define("peristent_tokens", {
+  uuid: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+  },
   jwt: {
     type: DataTypes.STRING(500),
   },

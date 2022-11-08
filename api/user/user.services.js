@@ -75,7 +75,11 @@ const login = async function (userInfo) {
     const { token, publicKey } = await signAndGet({
       id: isExist.dataValues.id,
     });
-    const result = await PersistentTokenModel.addNewUserToken(token, publicKey);
+    const result = await PersistentTokenModel.addNewUserToken(
+      token,
+      publicKey,
+      isExist.dataValues.uuid
+    );
     if (result) {
       return showResponse(
         REQUEST_CODE.SUCCESS,
