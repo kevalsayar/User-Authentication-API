@@ -1,11 +1,8 @@
 const { verifyToken } = require("../common/helper");
-const { PersistentTokenModel } = require("../calculation/calculation.queries");
-/**
- * @description check bearer token exist or not
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- */
+const { PersistentTokenModel } = require("../user/user.queries");
+const { showResponse } = require("../common/helper");
+const { REQUEST_CODE, STATUS, Messages } = require("../common/members");
+
 const auth = async function (req, res, next) {
   if (req.headers.authorization) {
     const jwtToken = req.headers.authorization;
@@ -13,7 +10,6 @@ const auth = async function (req, res, next) {
       const persistentToken = await PersistentTokenModel.getPublicKey(
         jwtToken.split(" ")[1]
       );
-
       if (persistentToken) {
         const payLoad = verifyToken(
           persistentToken.jwt,
@@ -21,13 +17,31 @@ const auth = async function (req, res, next) {
         );
         next();
       } else {
-        res.send("Error");
+        res.send(
+          showResponse(
+            REQUEST_CODE.BAD_REQUEST,
+            STATUS.FALSE,
+            Messages.token["token-not-found"]
+          )
+        );
       }
     } else {
-      res.send("Error");
+      res.send(
+        showResponse(
+          REQUEST_CODE.BAD_REQUEST,
+          STATUS.FALSE,
+          Messages.token["bearer-token-required"]
+        )
+      );
     }
   } else {
-    res.send("Error");
+    res.send(
+      showResponse(
+        REQUEST_CODE.BAD_REQUEST,
+        STATUS.FALSE,
+        Messages.token["token-not-provided"]
+      )
+    );
   }
 };
 

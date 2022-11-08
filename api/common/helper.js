@@ -6,6 +6,7 @@ const { promisify } = require("util");
 const { REQUEST_CODE, STATUS, Messages } = require("./members");
 const readFileAsync = promisify(fs.readFile);
 const jwt = require("jsonwebtoken");
+const { SECRET_KEY, PASS_ENCRYPTION } = require("../../env");
 
 const showResponse = function (code, status, message, data = null) {
   const response = { code, status, message };
@@ -41,52 +42,55 @@ const readFile = async function (fileName) {
     return showResponse(
       REQUEST_CODE.BAD_REQUEST,
       STATUS.FALSE,
-      Messages.data.error,
+      Messages.data.error
     );
   }
 };
 
- const generateHash = function (data) {
-  const hash = createHmac("sha256","123456"); // TODO : add salt
+const generateHash = function (data) {
+  const hash = createHmac(PASS_ENCRYPTION, SECRET_KEY);
   return hash.update(data).digest("hex");
-}
+};
 
 const signAndGet = function (data) {
   return new Promise((resolve, rejects) => {
-      crypto.generateKeyPair("dsa", {
-          modulusLength: 2048,
-          publicKeyEncoding: {
-            type: 'spki',
-            format: 'pem'
-          },
-          privateKeyEncoding: {
-            type: 'pkcs8',
-            format: 'pem'
-          }
-        }, (err, publicKey, privateKey) => {
-          if(!err){
-              const token = jwt.sign(data,privateKey, { algorithm : "ES256"});
-              resolve({
-                  publicKey,
-                  token
-              })
-          }else{
-              rejects(err);
-          }
-      });
+    crypto.generateKeyPair(
+      "dsa",
+      {
+        modulusLength: 2048,
+        publicKeyEncoding: {
+          type: "spki",
+          format: "pem",
+        },
+        privateKeyEncoding: {
+          type: "pkcs8",
+          format: "pem",
+        },
+      },
+      (err, publicKey, privateKey) => {
+        if (!err) {
+          const token = jwt.sign(
+            data,
+            privateKey,
+            { algorithm: "ES256" },
+            { expiresIn: "60s" }
+          );
+          resolve({
+            publicKey,
+            token,
+          });
+        } else {
+          rejects(err);
+        }
+      }
+    );
   });
-}
+};
 
-/**
- * @description verify jwt token
- * @param {String} publicKey 
- * @param {String} token 
- * @returns 
- */
- const verifyToken = function (token, publicKey) {
-  const payload = jwt.verify(token,publicKey);
+const verifyToken = function (token, publicKey) {
+  const payload = jwt.verify(token, publicKey);
   return payload;
-}
+};
 
 module.exports = {
   showResponse,
@@ -94,5 +98,5 @@ module.exports = {
   readFile,
   generateHash,
   signAndGet,
-  verifyToken
+  verifyToken,
 };
