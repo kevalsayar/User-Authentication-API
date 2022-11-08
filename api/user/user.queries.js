@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
 const { User, PersistentTokensModel } = require("./user.model");
 
@@ -32,14 +33,14 @@ const UserQueries = function () {
     return arr;
   };
 
-  const userPassUpdate = async function (emailid, newPassword) {
+  const userPassUpdate = async function (email, newPassword) {
     const results = await User.update(
       {
         password: newPassword,
       },
       {
         where: {
-          email: emailid,
+          email,
         },
       }
     );
@@ -49,10 +50,39 @@ const UserQueries = function () {
   const removeUser = async function (uuid) {
     const results = await User.destroy({
       where: {
-        uuid: uuid,
+        uuid,
       },
     });
     return results ? true : false;
+  };
+
+  const searchInfo = async (searchString, offset = 0, limit = 10) => {
+    const queryResult = await User.findAndCountAll({
+      raw: true,
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${searchString}%`,
+            },
+          },
+          {
+            email: {
+              [Op.like]: `%${searchString}%`,
+            },
+          },
+          {
+            company: {
+              [Op.like]: `%${searchString}%`,
+            },
+          },
+        ],
+      },
+      limit,
+      offset,
+      order: [["updatedAt", "DESC"]],
+    });
+    return queryResult;
   };
 
   return {
@@ -61,6 +91,7 @@ const UserQueries = function () {
     getAllUsers,
     userPassUpdate,
     removeUser,
+    searchInfo,
   };
 };
 

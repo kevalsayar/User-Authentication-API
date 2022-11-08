@@ -2,31 +2,6 @@ const { showResponse } = require("../common/helper");
 const { REQUEST_CODE, STATUS, Messages } = require("../common/members");
 const { UserModel, PersistentTokenModel } = require("../user/user.queries");
 
-const registerUserCheck = async function (req, res, next) {
-  const { email } = req.body;
-  if (email) {
-    if (await UserModel.checkUserExistance("email", email)) {
-      res.send(
-        showResponse(
-          REQUEST_CODE.BAD_REQUEST,
-          STATUS.FALSE,
-          Messages.user["user-exists"]
-        )
-      );
-    } else {
-      next();
-    }
-  } else {
-    res.send(
-      showResponse(
-        REQUEST_CODE.BAD_REQUEST,
-        STATUS.FALSE,
-        Messages.user["email-required"]
-      )
-    );
-  }
-};
-
 const passUpdateCheck = async function (req, res, next) {
   const { email, password } = req.body;
   if (!(email && password)) {
@@ -89,7 +64,6 @@ const deleteUserCheck = async function (req, res, next) {
 };
 
 module.exports = {
-  registerUserCheck,
   passUpdateCheck,
   loginCheck,
   deleteUserCheck,

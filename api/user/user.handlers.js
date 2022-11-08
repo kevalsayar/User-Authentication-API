@@ -5,6 +5,7 @@ const {
   logout,
   passwordUpdate,
   removeUserFromDB,
+  searchInfoOfDeal,
 } = require("./user.services");
 
 const UserHandlers = () => {
@@ -38,6 +39,16 @@ const UserHandlers = () => {
     res.status(response.code).json(response);
   };
 
+  const searchHandler = async function (req, res) {
+    console.log(req.body);
+    console.log(req.query);
+    const response = await searchInfoOfDeal({
+      ...req.query,
+      ...req.body,
+    });
+    res.status(response.code).json(response);
+  };
+
   return {
     registerUser,
     fetchUserDetails,
@@ -45,6 +56,7 @@ const UserHandlers = () => {
     userLogout,
     updatePass,
     deleteUser,
+    searchHandler,
   };
 };
 

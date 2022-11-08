@@ -4,19 +4,35 @@ const { REQUEST_CODE, Messages, STATUS } = require("../common/members");
 
 const register = async function (userInfo) {
   const { name, age, company, password, email } = userInfo;
-  userInfo.password = generateHash(userInfo.password);
-  if (await UserModel.createUser(userInfo)) {
-    return showResponse(
-      REQUEST_CODE.SUCCESS,
-      STATUS.TRUE,
-      Messages.data.success,
-      {
-        name: name,
-        age: age,
-        company: company,
-        email: email,
-        password: password,
+  if (email) {
+    if (await UserModel.checkUserExistance("email", email)) {
+      return showResponse(
+        REQUEST_CODE.BAD_REQUEST,
+        STATUS.FALSE,
+        Messages.user["user-exists"]
+      );
+    } else {
+      userInfo.password = generateHash(userInfo.password);
+      if (await UserModel.createUser(userInfo)) {
+        return showResponse(
+          REQUEST_CODE.SUCCESS,
+          STATUS.TRUE,
+          Messages.data.success,
+          {
+            name: name,
+            age: age,
+            company: company,
+            email: email,
+            password: password,
+          }
+        );
       }
+    }
+  } else {
+    return showResponse(
+      REQUEST_CODE.BAD_REQUEST,
+      STATUS.FALSE,
+      Messages.user["email-required"]
     );
   }
 };
@@ -126,6 +142,28 @@ const removeUserFromDB = async function (userInfo) {
   );
 };
 
+const searchInfoOfDeal = async function (data) {
+  try {
+    const searchResult = await UserModel.searchInfo(
+      data.searchValue,
+      parseInt(data.record_limit * (data.page_num - 1)),
+      parseInt(data.record_limit)
+    );
+    if (searchResult.count == 0)
+      return showResponse(REQUEST_CODE.BAD_REQUEST, true, "Record not found");
+    return showResponse(REQUEST_CODE.SUCCESS, true, "Search result", {
+      total_pages: searchResult.count,
+      search_list: searchResult.rows,
+    });
+  } catch (error) {
+    return showResponse(
+      REQUEST_CODE.INTERNAL_SERVER_ERROR,
+      false,
+      Messages.deal.error.internal
+    );
+  }
+};
+
 module.exports = {
   register,
   userDetails,
@@ -133,4 +171,5 @@ module.exports = {
   login,
   logout,
   removeUserFromDB,
+  searchInfoOfDeal,
 };
