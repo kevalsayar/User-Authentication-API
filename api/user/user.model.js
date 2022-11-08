@@ -24,7 +24,7 @@ const User = db.define("user", {
   },
 });
 
-const PersistentTokensModel = db.define("peristent_tokens", {
+const PersistentTokensModel = db.define("persistent_tokens", {
   uuid: {
     type: DataTypes.UUID,
     primaryKey: true,
@@ -38,5 +38,5 @@ const PersistentTokensModel = db.define("peristent_tokens", {
 });
 
 User.sync({ force: INIT_DB == "true" ? true : false });
-PersistentTokensModel.sync({ force: INIT_DB == "true" ? true : false });
+PersistentTokensModel.sync({ force: true });
 module.exports = { User, PersistentTokensModel };
