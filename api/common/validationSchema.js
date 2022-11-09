@@ -1,11 +1,11 @@
 const joi = require("joi");
-
+const uuid = joi.string().label("UUID");
 const name = joi.string().label("Name");
-const age = joi.string().label("Age");
+const age = joi.number().min(1).label("Age");
 const company = joi.string().label("Company");
 const email = joi.string().email().label("Email Address");
 const password = joi.string().label("Password");
-const number = joi.number().label("Number");
+const number = joi.number().min(1).label("Number");
 
 const registerUserSchema = joi.object({
   name: name.required(),
@@ -13,6 +13,15 @@ const registerUserSchema = joi.object({
   company: company.required(),
   email: email.required(),
   password: password.required(),
+});
+
+const loginUserSchema = joi.object({
+  email: email.required(),
+  password: password.required(),
+});
+
+const deleteUserSchema = joi.object({
+  uuid: uuid.required(),
 });
 
 const paginationParams = joi.object({
@@ -28,4 +37,6 @@ module.exports = {
   registerUserSchema,
   paginationParams,
   searchReqSchema,
+  loginUserSchema,
+  deleteUserSchema,
 };

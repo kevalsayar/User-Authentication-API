@@ -6,6 +6,7 @@ const {
   passwordUpdate,
   removeUserFromDB,
   searchInfoOfDeal,
+  verifyUser,
 } = require("./user.services");
 
 const UserHandlers = () => {
@@ -40,12 +41,15 @@ const UserHandlers = () => {
   };
 
   const searchHandler = async function (req, res) {
-    console.log(req.body);
-    console.log(req.query);
     const response = await searchInfoOfDeal({
       ...req.query,
       ...req.body,
     });
+    res.status(response.code).json(response);
+  };
+
+  const verifyUserEmail = async function (req, res) {
+    const response = await verifyUser(req.params);
     res.status(response.code).json(response);
   };
 
@@ -57,6 +61,7 @@ const UserHandlers = () => {
     updatePass,
     deleteUser,
     searchHandler,
+    verifyUserEmail,
   };
 };
 

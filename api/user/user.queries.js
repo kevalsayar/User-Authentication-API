@@ -1,22 +1,35 @@
 const { Op } = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
-const { User, PersistentTokensModel } = require("./user.model");
+const { UserModel, PersistentTokensModel } = require("./user.model");
+const { generateHash } = require("../common/helper");
 
 const UserQueries = function () {
   const createUser = async function (user) {
-    const results = await User.create({
-      uuid: uuidv4(),
+    const useruuid = uuidv4();
+    const results = await UserModel.create({
+      uuid: useruuid,
       name: user?.name,
       age: user?.age,
       email: user?.email,
       password: user?.password,
       company: user?.company,
+      uuidhash: generateHash(useruuid),
     });
-    return results ? true : false;
+    return results ? results.dataValues : false;
+  };
+
+  const userVerificationStatus = async function (columnName, val) {
+    const results = await UserModel.findOne({
+      where: {
+        [columnName]: val,
+      },
+      attributes: ["is_verified"],
+    });
+    return results.dataValues["is_verified"] ? true : false;
   };
 
   const checkUserExistance = async function (columnName, val) {
-    const results = await User.findOne({
+    const results = await UserModel.findOne({
       where: {
         [columnName]: val,
       },
@@ -24,17 +37,27 @@ const UserQueries = function () {
     return results;
   };
 
-  const getAllUsers = async function () {
-    const results = await User.findAll();
-    const arr = [];
-    for (result in results) {
-      arr.push(results[result].dataValues);
-    }
-    return arr;
+  const getAllUsers = async function (offset = 0, limit = 10) {
+    const results = await UserModel.findAll({
+      raw: true,
+      offset,
+      limit,
+      attributes: {
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "uuidhash",
+          "is_verified",
+        ],
+      },
+      order: [["createdAt", "DESC"]],
+    });
+    return results;
   };
 
   const userPassUpdate = async function (email, newPassword) {
-    const results = await User.update(
+    const results = await UserModel.update(
       {
         password: newPassword,
       },
@@ -48,7 +71,7 @@ const UserQueries = function () {
   };
 
   const removeUser = async function (uuid) {
-    const results = await User.destroy({
+    const results = await UserModel.destroy({
       where: {
         uuid,
       },
@@ -57,7 +80,7 @@ const UserQueries = function () {
   };
 
   const searchInfo = async (searchString, offset = 0, limit = 10) => {
-    const queryResult = await User.findAndCountAll({
+    const queryResult = await UserModel.findAndCountAll({
       raw: true,
       where: {
         [Op.or]: [
@@ -80,9 +103,24 @@ const UserQueries = function () {
       },
       limit,
       offset,
-      order: [["updatedAt", "DESC"]],
+      attributes: ["name", "email", "company"],
+      order: [["createdAt", "DESC"]],
     });
     return queryResult;
+  };
+
+  const userVerificationUpdate = async function (uuidhash) {
+    const results = await UserModel.update(
+      {
+        is_verified: 1,
+      },
+      {
+        where: {
+          uuidhash,
+        },
+      }
+    );
+    return results ? true : false;
   };
 
   return {
@@ -92,6 +130,8 @@ const UserQueries = function () {
     userPassUpdate,
     removeUser,
     searchInfo,
+    userVerificationStatus,
+    userVerificationUpdate,
   };
 };
 
@@ -107,12 +147,13 @@ const PersistentTokensQueries = function () {
 
   const getPublicKey = async function (jwt) {
     const results = await PersistentTokensModel.findOne({
+      raw: true,
       where: {
         jwt,
       },
       attributes: ["jwt", "publicKey"],
     });
-    return results ? results.dataValues : false;
+    return results ? results : false;
   };
 
   const removeToken = async function (jwt) {
@@ -121,7 +162,6 @@ const PersistentTokensQueries = function () {
         jwt,
       },
     });
-
     return results ? true : false;
   };
 

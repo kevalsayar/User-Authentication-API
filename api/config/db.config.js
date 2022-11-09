@@ -26,5 +26,5 @@ db.authenticate()
   });
 
 module.exports = {
-  db
+  db,
 };

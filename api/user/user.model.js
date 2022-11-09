@@ -2,7 +2,7 @@ const { db } = require("../config/db.config");
 const { DataTypes } = require("sequelize");
 const { INIT_DB } = require("../../env");
 
-const User = db.define("user", {
+const UserModel = db.define("user", {
   uuid: {
     type: DataTypes.UUID,
     primaryKey: true,
@@ -22,6 +22,12 @@ const User = db.define("user", {
   company: {
     type: DataTypes.STRING,
   },
+  uuidhash: {
+    type: DataTypes.STRING,
+  },
+  is_verified: {
+    type: DataTypes.BOOLEAN,
+  },
 });
 
 const PersistentTokensModel = db.define("persistent_tokens", {
@@ -37,6 +43,6 @@ const PersistentTokensModel = db.define("persistent_tokens", {
   },
 });
 
-User.sync({ force: INIT_DB == "true" ? true : false });
-PersistentTokensModel.sync({ force: true });
-module.exports = { User, PersistentTokensModel };
+UserModel.sync({ force: INIT_DB == "true" ? true : false });
+PersistentTokensModel.sync({ force: INIT_DB == "true" ? true : false });
+module.exports = { UserModel, PersistentTokensModel };

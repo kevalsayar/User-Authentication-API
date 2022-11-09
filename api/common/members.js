@@ -7,8 +7,13 @@ const Messages = {
   data: {
     success: "Data Fetched!",
     error: "Error Faced!",
+    queryparams: "Error revolving query parameters!",
   },
   user: {
+    "user-registered": "User successfully registered!",
+    "user-verification-done": "User successfully verified!",
+    "user-already-verified": "User already verified, please login!",
+    "user-not-verified": "User's not yet verified!",
     "email-required": "Emailid required!",
     "uuid-does-not-exist": "uuid does not exist, try again!",
     "no-user-found": "User not found, Please register!",
@@ -38,8 +43,24 @@ const STATUS = {
   FALSE: false,
 };
 
+const ENDPOINTS = Object.freeze({
+  USER: "/user",
+  REGISTER: "/register",
+  LOGIN: "/login",
+  PASSWORD_UPDATE: "passupdate",
+  VERIFY: "/verify",
+  DELETE: "/delete",
+  LOGOUT: "/logout",
+});
+
+const HTML_TEMPLATES = Object.freeze({
+  WELCOME: "welcome",
+});
+
 module.exports = {
   REQUEST_CODE,
   Messages,
   STATUS,
+  ENDPOINTS,
+  HTML_TEMPLATES,
 };

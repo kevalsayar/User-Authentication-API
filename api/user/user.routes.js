@@ -3,16 +3,14 @@ const {
   registerUserSchema,
   searchReqSchema,
   paginationParams,
+  loginUserSchema,
+  deleteUserSchema,
 } = require("../common/validationSchema");
 const { auth } = require("../middleware/auth.middleware");
 const {
   validateReqBody,
   validateQueryParam,
 } = require("../middleware/request.middleware");
-const {
-  passUpdateCheck,
-  deleteUserCheck,
-} = require("../middleware/requiredchecks.middleware");
 const {
   registerUser,
   fetchUserDetails,
@@ -21,19 +19,35 @@ const {
   updatePass,
   deleteUser,
   searchHandler,
+  verifyUserEmail,
 } = require("./user.handlers");
+const { ENDPOINTS } = require("../common/members");
 
 router.get("/details/:uuid?", [auth], fetchUserDetails);
 
-router.post("/register", [validateReqBody(registerUserSchema)], registerUser);
+router.post(
+  ENDPOINTS.REGISTER,
+  [validateReqBody(registerUserSchema)],
+  registerUser
+);
 
-router.post("/login", userLogin);
+router.post(ENDPOINTS.LOGIN, [validateReqBody(loginUserSchema)], userLogin);
 
-router.post("/logout", [auth], userLogout);
+router.post(ENDPOINTS.LOGOUT, [auth], userLogout);
 
-router.patch("/passupdate", [auth, passUpdateCheck], updatePass);
+router.patch("/verify/:uuidhash", verifyUserEmail);
 
-router.delete("/deleteuser", [auth, deleteUserCheck], deleteUser);
+router.patch(
+  ENDPOINTS.PASSWORD_UPDATE,
+  [auth, validateReqBody(loginUserSchema)],
+  updatePass
+);
+
+router.delete(
+  ENDPOINTS.DELETE,
+  [auth, validateReqBody(deleteUserSchema)],
+  deleteUser
+);
 
 router.post(
   "/search",

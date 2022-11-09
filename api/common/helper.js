@@ -1,5 +1,4 @@
-const { createHmac } = require("crypto");
-const crypto = require("crypto");
+const { createHmac, generateKeyPair } = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
@@ -7,6 +6,8 @@ const { REQUEST_CODE, STATUS, Messages } = require("./members");
 const readFileAsync = promisify(fs.readFile);
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY, PASS_ENCRYPTION } = require("../../env");
+const { mailTransporter } = require("../config/mail.config");
+const Handlebars = require("handlebars");
 
 const showResponse = function (code, status, message, data = null) {
   const response = { code, status, message };
@@ -54,7 +55,7 @@ const generateHash = function (data) {
 
 const signAndGet = function (data) {
   return new Promise((resolve, rejects) => {
-    crypto.generateKeyPair(
+    generateKeyPair(
       "dsa",
       {
         modulusLength: 2048,
@@ -92,6 +93,36 @@ const verifyToken = function (token, publicKey) {
   return payload;
 };
 
+const sendEmail = async function (mailDetails, templateName, data) {
+  const html = await getTemplate(templateName, data);
+  mailDetails.html = html;
+  try {
+    mailTransporter.sendMail(mailDetails, function (err, data) {
+      if (!err) console.log("Email sent successfully");
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getTemplate = async function (templateName, data) {
+  return new Promise((resolve, rejects) => {
+    fs.readFile(
+      path.join(__dirname, "..", "templates", templateName, "index.html"),
+      function (err, fileData) {
+        if (!err) {
+          const template = fileData.toString();
+          const HandleBarsFunction = Handlebars.compile(template);
+          const html = HandleBarsFunction(data);
+          resolve(html);
+        } else {
+          rejects(err);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   showResponse,
   writeFile,
@@ -99,4 +130,5 @@ module.exports = {
   generateHash,
   signAndGet,
   verifyToken,
+  sendEmail,
 };

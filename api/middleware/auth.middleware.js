@@ -11,10 +11,7 @@ const auth = async function (req, res, next) {
         jwtToken.split(" ")[1]
       );
       if (persistentToken) {
-        const payLoad = verifyToken(
-          persistentToken.jwt,
-          persistentToken.publicKey
-        );
+        verifyToken(persistentToken.jwt, persistentToken.publicKey);
         next();
       } else {
         res.send(
