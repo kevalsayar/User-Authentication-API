@@ -18,6 +18,7 @@ const Messages = {
     "uuid-does-not-exist": "uuid does not exist, try again!",
     "no-user-found": "User not found, Please register!",
     "login-success": "Login completed successfully!",
+    "login-error": "User already logged in!",
     "wrong-password": "Please enter the right password!",
     "email-password-both-necessary": "Please enter both, email and password!",
     "user-exists": "User already exists, Please login!",

@@ -37,6 +37,25 @@ const UserQueries = function () {
     return results;
   };
 
+  const getSingleUser = async function (columnName, val) {
+    const results = await UserModel.findOne({
+      where: {
+        [columnName]: val,
+      },
+      raw: true,
+      attributes: {
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "uuidhash",
+          "is_verified",
+        ],
+      },
+    });
+    return results;
+  };
+
   const getAllUsers = async function (offset = 0, limit = 10) {
     const results = await UserModel.findAll({
       raw: true,
@@ -126,6 +145,7 @@ const UserQueries = function () {
   return {
     createUser,
     checkUserExistance,
+    getSingleUser,
     getAllUsers,
     userPassUpdate,
     removeUser,
@@ -141,6 +161,15 @@ const PersistentTokensQueries = function () {
       uuid: uuid,
       jwt: token,
       publicKey: publicKey,
+    });
+    return results;
+  };
+
+  const checkUserExistance = async function (columnName, val) {
+    const results = await PersistentTokensModel.findOne({
+      where: {
+        [columnName]: val,
+      },
     });
     return results;
   };
@@ -169,6 +198,7 @@ const PersistentTokensQueries = function () {
     addNewUserToken,
     getPublicKey,
     removeToken,
+    checkUserExistance,
   };
 };
 

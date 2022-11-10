@@ -28,7 +28,7 @@ const register = async function (userInfo) {
 const userDetails = async function (userInfo) {
   const { uuid } = userInfo;
   if (uuid) {
-    const isExist = await UserModel.checkUserExistance("uuid", uuid);
+    const isExist = await UserModel.getSingleUser("uuid", uuid);
     if (!isExist) {
       return showResponse(
         REQUEST_CODE.BAD_REQUEST,
@@ -85,28 +85,40 @@ const login = async function (userInfo) {
   }
   const verified = await UserModel.userVerificationStatus("email", email);
   if (verified) {
-    if (isExist.dataValues["password"] === generateHash(password)) {
-      const { token, publicKey } = await signAndGet({
-        id: isExist.dataValues.id,
-      });
-      const result = await PersistentTokenModel.addNewUserToken(
-        token,
-        publicKey,
-        isExist.dataValues.uuid
-      );
-      if (result) {
+    const isLoggedIn = await PersistentTokenModel.checkUserExistance(
+      "uuid",
+      isExist.dataValues.uuid
+    );
+    if (!isLoggedIn) {
+      if (isExist.dataValues["password"] === generateHash(password)) {
+        const { token, publicKey } = await signAndGet({
+          id: isExist.dataValues.id,
+        });
+        const result = await PersistentTokenModel.addNewUserToken(
+          token,
+          publicKey,
+          isExist.dataValues.uuid
+        );
+        if (result) {
+          return showResponse(
+            REQUEST_CODE.SUCCESS,
+            STATUS.TRUE,
+            Messages.user["login-success"],
+            { token }
+          );
+        }
+      } else {
         return showResponse(
-          REQUEST_CODE.SUCCESS,
-          STATUS.TRUE,
-          Messages.user["login-success"],
-          { token }
+          REQUEST_CODE.BAD_REQUEST,
+          STATUS.FALSE,
+          Messages.user["wrong-password"]
         );
       }
     } else {
       return showResponse(
         REQUEST_CODE.BAD_REQUEST,
         STATUS.FALSE,
-        Messages.user["wrong-password"]
+        Messages.user["login-error"]
       );
     }
   }
