@@ -1,19 +1,16 @@
-const { Op } = require("sequelize");
-const { v4: uuidv4 } = require("uuid");
-const { UserModel, PersistentTokensModel } = require("./user.model");
-const { generateHash } = require("../common/helper");
+const { Op } = require("sequelize"),
+  { UserModel, PersistentTokensModel } = require("./user.model");
 
 const UserQueries = function () {
   const createUser = async function (user) {
-    const useruuid = uuidv4();
     const results = await UserModel.create({
-      uuid: useruuid,
+      uuid: user?.uuid,
       name: user?.name,
       age: user?.age,
       email: user?.email,
       password: user?.password,
       company: user?.company,
-      uuidhash: generateHash(useruuid),
+      uuidhash: user?.uuidhash,
     });
     return results ? results.dataValues : false;
   };

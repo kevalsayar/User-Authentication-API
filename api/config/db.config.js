@@ -1,12 +1,12 @@
-const { Sequelize } = require("sequelize");
-const {
-  DB_HOST,
-  DB_NAME,
-  DB_USERNAME,
-  DB_PASSWORD,
-  DB_PORT,
-  DIALECT,
-} = require("../../env.js");
+const { Sequelize } = require("sequelize"),
+  {
+    DB_HOST,
+    DB_NAME,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_PORT,
+    DIALECT,
+  } = require("../../env.js");
 
 const db = new Sequelize({
   host: DB_HOST,

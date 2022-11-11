@@ -1,0 +1,625 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User Authentication API",
+        "version": "1.0.0",
+        "description": "User Authentication API",
+        "contact": {
+            "email": "keval.sayar@globalvoxinc.com",
+            "name": "Keval Sayar"
+        }
+    },
+    "tags": [
+        {
+            "name": "user",
+            "description": "User operations"
+        }
+    ],
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Local Server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Security Schemas"
+            }
+        },
+        "responses": {
+            "201": {
+                "description": "New resource created",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "default": 201
+                                },
+                                "status": {
+                                    "type": "boolean",
+                                    "default": true
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "default": "New resource created."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Bad Request",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "default": 400
+                                },
+                                "status": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "default": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "UnAuthorized",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "default": 401
+                                },
+                                "status": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "default": "Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "user register routes",
+                "requestBody": {
+                    "required": true,
+                    "description": "request body for user registration",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "title": "User",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "John Doe",
+                                        "nullable": false
+                                    },
+                                    "age": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "18",
+                                        "nullable": false
+                                    },
+                                    "company": {
+                                        "type": "string",
+                                        "example": "Google",
+                                        "nullable": false,
+                                        "format": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@gmail.com",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "john1234",
+                                        "nullable": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/201"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "user login routes",
+                "tags": [
+                    "user"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "request body for user login",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "nullable": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User LoggedIn",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Log in successful."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "jwtToken": {
+                                                    "type": "string",
+                                                    "nullable": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/user/details/{uuid}": {
+            "get": {
+                "description": "get single user's details",
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "name": "uuid",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "user's uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns user of specified uuid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Data Fetched!"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "uuid": {
+                                                    "type": "string",
+                                                    "default": "829b72cb-da4f-448b-bd5a-a69535b859d6",
+                                                    "nullable": false
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "default": "John Doe",
+                                                    "nullable": false
+                                                },
+                                                "age": {
+                                                    "type": "integer",
+                                                    "default": 18,
+                                                    "nullable": false
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "default": "johndoe@gmail.com",
+                                                    "nullable": false
+                                                },
+                                                "company": {
+                                                    "type": "string",
+                                                    "default": "Google",
+                                                    "nullable": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/user/delete": {
+            "delete": {
+                "description": "delete single user",
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "request body for deleting a user with uuid",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "format": "string",
+                                "nullable": false,
+                                "properties": {
+                                    "uuid": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User deleted succesfuly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Request succeeded"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "user logout route",
+                "responses": {
+                    "200": {
+                        "description": "User logged out succesfuly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Request succeeded"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/user/search": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "user search routes",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page_num",
+                        "schema": {
+                            "type": "integer",
+                            "nullable": false
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "record_limit",
+                        "schema": {
+                            "type": "integer",
+                            "nullable": false
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "request body for search route",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "searchValue": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "nullable": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/201"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/user/passupdate": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "description": "update user's password",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "update user's password",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "nullable": false,
+                                        "format": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Password changed!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        },
+        "/user/verify/{uuidhash}": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "description": "verify user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuidhash",
+                        "schema": {
+                            "type": "string",
+                            "nullable": false
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Verified!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 200
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "default": "User successfully verified!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
+        }
+    }
+}

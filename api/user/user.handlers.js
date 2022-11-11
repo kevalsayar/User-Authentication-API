@@ -1,47 +1,40 @@
-const {
-  register,
-  userDetails,
-  login,
-  logout,
-  passwordUpdate,
-  removeUserFromDB,
-  searchInfoOfDeal,
-  verifyUser,
-} = require("./user.services");
+const { UserService } = require("./user.services");
 
-const UserHandlers = () => {
+const UserHandlers = function () {
   const registerUser = async function (req, res) {
-    const response = await register(req.body);
+    const response = await UserService.register(req.body);
     res.status(response.code).json(response);
   };
 
   const fetchUserDetails = async function (req, res) {
-    const response = await userDetails(req.params);
+    const response = await UserService.userDetails(req.params);
     res.status(response.code).json(response);
   };
 
   const updatePass = async function (req, res) {
-    const response = await passwordUpdate(req.body);
+    const response = await UserService.passwordUpdate(req.body);
     res.status(response.code).json(response);
   };
 
   const userLogin = async function (req, res) {
-    const response = await login(req.body);
+    const response = await UserService.login(req.body);
     res.status(response.code).json(response);
   };
 
   const userLogout = async function (req, res) {
-    const response = await logout(req.headers.authorization.split(" ")[1]);
+    const response = await UserService.logout(
+      req.headers.authorization.split(" ")[1]
+    );
     res.status(response.code).json(response);
   };
 
   const deleteUser = async function (req, res) {
-    const response = await removeUserFromDB(req.body);
+    const response = await UserService.removeUserFromDB(req.body);
     res.status(response.code).json(response);
   };
 
   const searchHandler = async function (req, res) {
-    const response = await searchInfoOfDeal({
+    const response = await UserService.searchInfoOfDeal({
       ...req.query,
       ...req.body,
     });
@@ -49,7 +42,7 @@ const UserHandlers = () => {
   };
 
   const verifyUserEmail = async function (req, res) {
-    const response = await verifyUser(req.params);
+    const response = await UserService.verifyUser(req.params);
     res.status(response.code).json(response);
   };
 
@@ -65,4 +58,6 @@ const UserHandlers = () => {
   };
 };
 
-module.exports = UserHandlers();
+module.exports = {
+  UserHandler: UserHandlers(),
+};

@@ -1,6 +1,6 @@
-const { db } = require("../config/db.config");
-const { DataTypes } = require("sequelize");
-const { INIT_DB } = require("../../env");
+const { db } = require("../config/db.config"),
+  { DataTypes } = require("sequelize"),
+  { INIT_DB } = require("../../env");
 
 const UserModel = db.define("user", {
   uuid: {

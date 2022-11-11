@@ -1,47 +1,61 @@
-const { verifyToken } = require("../common/helper");
 const { PersistentTokenModel } = require("../user/user.queries");
-const { showResponse } = require("../common/helper");
-const { REQUEST_CODE, STATUS, Messages } = require("../common/members");
+const { HelperFunction } = require("../common/helper");
+const { ConstantMembers } = require("../common/members");
 
-const auth = async function (req, res, next) {
-  if (req.headers.authorization) {
-    const jwtToken = req.headers.authorization;
-    if (jwtToken.includes("Bearer")) {
-      const persistentToken = await PersistentTokenModel.getPublicKey(
-        jwtToken.split(" ")[1]
-      );
-      if (persistentToken) {
-        verifyToken(persistentToken.jwt, persistentToken.publicKey);
-        next();
-      } else {
-        res.send(
-          showResponse(
-            REQUEST_CODE.BAD_REQUEST,
-            STATUS.FALSE,
-            Messages.token["token-not-found"]
-          )
+const authMiddleware = function () {
+  const auth = async function (req, res, next) {
+    if (req.headers.authorization) {
+      const jwtToken = req.headers.authorization;
+      if (jwtToken.includes("Bearer")) {
+        const persistentToken = await PersistentTokenModel.getPublicKey(
+          jwtToken.split(" ")[1]
         );
+        if (persistentToken) {
+          HelperFunction.verifyToken(
+            persistentToken.jwt,
+            persistentToken.publicKey
+          );
+          next();
+        } else {
+          res
+            .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+            .json(
+              HelperFunction.showResponse(
+                ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+                ConstantMembers.STATUS.FALSE,
+                ConstantMembers.Messages.token["token-not-found"]
+              )
+            );
+        }
+      } else {
+        res
+          .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+          .json(
+            HelperFunction.showResponse(
+              ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+              ConstantMembers.STATUS.FALSE,
+              ConstantMembers.Messages.token["bearer-token-required"]
+            )
+          );
       }
     } else {
-      res.send(
-        showResponse(
-          REQUEST_CODE.BAD_REQUEST,
-          STATUS.FALSE,
-          Messages.token["bearer-token-required"]
-        )
-      );
+      res
+        .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+        .json(
+          HelperFunction.showResponse(
+            ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+            ConstantMembers.STATUS.FALSE,
+            ConstantMembers.Messages.token["token-not-provided"]
+          )
+        );
     }
-  } else {
-    res.send(
-      showResponse(
-        REQUEST_CODE.BAD_REQUEST,
-        STATUS.FALSE,
-        Messages.token["token-not-provided"]
-      )
-    );
-  }
+  };
+
+  return {
+    auth,
+  };
 };
 
 module.exports = {
-  auth,
+  authMiddleware: authMiddleware(),
 };

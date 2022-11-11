@@ -20,6 +20,7 @@
         "mysql2": "^2.3.3",
         "nodemailer": "^6.8.0",
         "sequelize": "^6.25.4",
+        "swagger-ui-express": "^4.6.0",
         "uuid": "^9.0.0"
     },
     "devDependencies": {

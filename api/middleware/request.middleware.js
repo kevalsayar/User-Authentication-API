@@ -1,53 +1,59 @@
-const { showResponse } = require("../common/helper");
-const { REQUEST_CODE, STATUS, Messages } = require("../common/members");
+const { HelperFunction } = require("../common/helper");
+const { ConstantMembers } = require("../common/members");
 
-const validateReqBody = function (reqSchema) {
-  return (req, res, next) => {
-    if (req.body) {
-      const { error } = reqSchema.validate(req.body);
-      if (error) {
-        const response = showResponse(
-          REQUEST_CODE.BAD_REQUEST,
-          STATUS.FALSE,
-          error.message
+const requestMiddleware = function () {
+  const validateReqBody = function (reqSchema) {
+    return (req, res, next) => {
+      if (req.body) {
+        const { error } = reqSchema.validate(req.body);
+        if (error) {
+          const response = HelperFunction.showResponse(
+            ConstantMembers.REQUEST_CODE.BAD_REQUEST,
+            ConstantMembers.STATUS.FALSE,
+            error.message
+          );
+          res.ConstantMembers.STATUS(response.code).json(response);
+        } else next();
+      } else {
+        const response = HelperFunction.showResponse(
+          ConstantMembers.REQUEST_CODE.BAD_REQUEST,
+          false,
+          ConstantMembers.Messages.request.validation["body-not-exist"]
         );
-        res.status(response.code).json(response);
-      } else next();
-    } else {
-      const response = showResponse(
-        REQUEST_CODE.BAD_REQUEST,
-        false,
-        Messages.request.validation["body-not-exist"]
-      );
-      res.status(response.code).json(response);
-    }
+        res.ConstantMembers.STATUS(response.code).json(response);
+      }
+    };
   };
-};
 
-const validateQueryParam = function (queryParamSchema) {
-  return (req, res, next) => {
-    if (req.query.page_num && req.query.record_limit) {
-      const { error } = queryParamSchema.validate(req.query);
-      if (error) {
-        const response = showResponse(
-          REQUEST_CODE.BAD_REQUEST,
-          STATUS.FALSE,
-          error.message
+  const validateQueryParam = function (queryParamSchema) {
+    return (req, res, next) => {
+      if (req.query.page_num && req.query.record_limit) {
+        const { error } = queryParamSchema.validate(req.query);
+        if (error) {
+          const response = HelperFunction.showResponse(
+            ConstantMembers.REQUEST_CODE.BAD_REQUEST,
+            ConstantMembers.STATUS.FALSE,
+            error.message
+          );
+          res.ConstantMembers.STATUS(response.code).json(response);
+        } else next();
+      } else {
+        response = HelperFunction.showResponse(
+          ConstantMembers.REQUEST_CODE.BAD_REQUEST,
+          ConstantMembers.STATUS.FALSE,
+          ConstantMembers.Messages.data.queryparams
         );
-        res.status(response.code).json(response);
-      } else next();
-    } else {
-      response = showResponse(
-        REQUEST_CODE.BAD_REQUEST,
-        STATUS.FALSE,
-        Messages.data.queryparams
-      );
-      res.status(response.code).json(response);
-    }
+        res.ConstantMembers.STATUS(response.code).json(response);
+      }
+    };
+  };
+
+  return {
+    validateReqBody,
+    validateQueryParam,
   };
 };
 
 module.exports = {
-  validateReqBody,
-  validateQueryParam,
+  reqMiddleware: requestMiddleware(),
 };

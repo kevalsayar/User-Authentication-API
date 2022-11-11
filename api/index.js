@@ -1,7 +1,7 @@
-const router = require("express").Router();
-const userRoutes = require("./user/user.routes");
-const { ENDPOINTS } = require("./common/members");
+const router = require("express").Router(),
+  userRoutes = require("./user/user.routes"),
+  { ConstantMembers } = require("./common/members");
 
-router.use(ENDPOINTS.USER, userRoutes);
+router.use(ConstantMembers.ENDPOINTS.USER, userRoutes);
 
 module.exports = router;
