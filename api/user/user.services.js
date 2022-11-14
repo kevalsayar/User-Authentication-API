@@ -224,7 +224,7 @@ const UserServices = function () {
         ConstantMembers.Messages.user["no-user-found"]
       );
     }
-    const verified = await UserModel.userVerificationConstantMembers.STATUS(
+    const verified = await UserModel.userVerificationStatus(
       "uuidhash",
       uuidhash
     );
