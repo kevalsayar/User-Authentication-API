@@ -12,15 +12,15 @@ const requestMiddleware = function () {
             ConstantMembers.STATUS.FALSE,
             error.message
           );
-          res.ConstantMembers.STATUS(response.code).json(response);
+          res.status(response.code).json(response);
         } else next();
       } else {
         const response = HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.BAD_REQUEST,
-          false,
+          ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.request.validation["body-not-exist"]
         );
-        res.ConstantMembers.STATUS(response.code).json(response);
+        res.status(response.code).json(response);
       }
     };
   };
@@ -35,7 +35,7 @@ const requestMiddleware = function () {
             ConstantMembers.STATUS.FALSE,
             error.message
           );
-          res.ConstantMembers.STATUS(response.code).json(response);
+          res.status(response.code).json(response);
         } else next();
       } else {
         response = HelperFunction.showResponse(
@@ -43,7 +43,7 @@ const requestMiddleware = function () {
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.data.queryparams
         );
-        res.ConstantMembers.STATUS(response.code).json(response);
+        res.status(response.code).json(response);
       }
     };
   };
