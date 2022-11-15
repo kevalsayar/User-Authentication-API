@@ -1,6 +1,6 @@
-const { PersistentTokenModel } = require("../user/user.queries");
-const { HelperFunction } = require("../common/helper");
-const { ConstantMembers } = require("../common/members");
+const { PersistentTokenModel } = require("../user/user.queries"),
+  { HelperFunction } = require("../common/helper"),
+  { ConstantMembers } = require("../common/members");
 
 const authMiddleware = function () {
   const auth = async function (req, res, next) {

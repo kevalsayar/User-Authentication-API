@@ -1,5 +1,5 @@
-const { HelperFunction } = require("../common/helper");
-const { ConstantMembers } = require("../common/members");
+const { HelperFunction } = require("../common/helper"),
+  { ConstantMembers } = require("../common/members");
 
 const requestMiddleware = function () {
   const validateReqBody = function (reqSchema) {

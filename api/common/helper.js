@@ -1,13 +1,14 @@
 const { createHmac, generateKeyPair } = require("crypto"),
   fs = require("fs"),
-  path = require("path"),
   { promisify } = require("util"),
-  { REQUEST_CODE, STATUS, Messages } = require("./members"),
   readFileAsync = promisify(fs.readFile),
+  path = require("path"),
   jwt = require("jsonwebtoken"),
-  { SECRET_KEY, PASS_ENCRYPTION } = require("../../env"),
-  { mailTransporter } = require("../config/mail.config"),
-  Handlebars = require("handlebars");
+  Handlebars = require("handlebars"),
+  { REQUEST_CODE, STATUS, Messages } = require("./members"),
+  { SECRET_KEY, PASS_ENCRYPTION, ALGORITHM, EXPIRES_IN } = require("../../env"),
+  { logger } = require("../config/logger.config"),
+  { mailTransporter } = require("../config/mail.config");
 
 const HelperFunction = function () {
   const showResponse = function (code, status, message, data = null) {
@@ -21,8 +22,8 @@ const HelperFunction = function () {
       path.join(__dirname, "..", "userdata", `${fileName}.json`),
       JSON.stringify(data),
       (err) => {
-        if (err) console.log(err);
-        console.log("Done writing");
+        if (err) logger.error(err)(err);
+        logger.info("Done Writing!");
       }
     );
   };
@@ -74,8 +75,8 @@ const HelperFunction = function () {
             const token = jwt.sign(
               data,
               privateKey,
-              { algorithm: "ES256" },
-              { expiresIn: "60s" }
+              { algorithm: ALGORITHM },
+              { expiresIn: EXPIRES_IN }
             );
             resolve({
               publicKey,
@@ -98,11 +99,11 @@ const HelperFunction = function () {
     const html = await getTemplate(templateName, data);
     mailDetails.html = html;
     try {
-      mailTransporter.sendMail(mailDetails, function (err, data) {
-        if (!err) console.log("Email sent successfully");
+      mailTransporter.sendMail(mailDetails, function (err, result) {
+        if (!err) logger.info(`Email sent successfully to ${data.name}`);
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 

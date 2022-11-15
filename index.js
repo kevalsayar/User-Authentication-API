@@ -5,6 +5,7 @@ const express = require("express"),
   cors = require("cors"),
   { serve, setup } = require("swagger-ui-express"),
   swaggerDoc = require("./openapi.json"),
+  { logger } = require("./api/config/logger.config"),
   app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,8 +22,9 @@ app.use(
     customSiteTitle: "User Authentication Swagger",
   })
 );
-app.use("/", indexRouter);
+
+app.use("/api/v1", indexRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server's listening on port ${PORT}....`);
+  logger.info(`Server's listening on port ${PORT}....`);
 });

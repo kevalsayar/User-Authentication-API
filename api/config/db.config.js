@@ -6,7 +6,8 @@ const { Sequelize } = require("sequelize"),
     DB_PASSWORD,
     DB_PORT,
     DIALECT,
-  } = require("../../env.js");
+  } = require("../../env.js"),
+  { logger } = require("./logger.config.js");
 
 const db = new Sequelize({
   host: DB_HOST,
@@ -15,14 +16,17 @@ const db = new Sequelize({
   port: DB_PORT,
   database: DB_NAME,
   dialect: DIALECT,
+  logging: (message) => {
+    logger.info(message);
+  },
 });
 
 db.authenticate()
   .then(() => {
-    console.log("Database Connection's been established successfully!");
+    logger.info("Database Connection's been established successfully!");
   })
   .catch((error) => {
-    console.error("Unable to connect to the database!", error);
+    logger.error("Unable to connect to the database!");
   });
 
 module.exports = {

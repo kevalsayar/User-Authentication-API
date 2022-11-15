@@ -53,11 +53,9 @@ const UserQueries = function () {
     return results;
   };
 
-  const getAllUsers = async function (offset = 0, limit = 10) {
+  const getAllUsers = async function () {
     const results = await UserModel.findAll({
       raw: true,
-      offset,
-      limit,
       attributes: {
         exclude: [
           "password",

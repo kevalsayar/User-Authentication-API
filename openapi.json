@@ -17,7 +17,7 @@
     ],
     "servers": [
         {
-            "url": "http://localhost:3000",
+            "url": "http://localhost:3000/api/v1",
             "description": "Local Server"
         }
     ],
@@ -258,7 +258,7 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "required": true,
+                        "required": false,
                         "name": "uuid",
                         "schema": {
                             "type": "string"

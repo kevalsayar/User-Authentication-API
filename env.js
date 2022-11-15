@@ -17,4 +17,11 @@ module.exports = {
   MAIL_PASS: process.env.MAIL_PASS,
   MAIL_USER: process.env.MAIL_USER,
   FROM_MAIL: process.env.FROM_MAIL,
+  TIME_FORMAT: process.env.TIME_FORMAT,
+  MAX_SIZE: process.env.MAX_SIZE,
+  LOG_LEVEL: process.env.LOG_LEVEL,
+  FILE_NAME: process.env.FILE_NAME,
+  FOLDER_PATH: process.env.FOLDER_PATH,
+  ALGORITHM: process.env.ALGORITHM,
+  EXPIRES_IN: process.env.EXPIRES_IN,
 };

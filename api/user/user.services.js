@@ -91,10 +91,7 @@ const UserServices = function () {
         ConstantMembers.Messages.user["no-user-found"]
       );
     }
-    const verified = await UserModel.userVerificationConstantMembers.STATUS(
-      "email",
-      email
-    );
+    const verified = await UserModel.userVerificationStatus("email", email);
     if (verified) {
       const isLoggedIn = await PersistentTokenModel.checkUserExistance(
         "uuid",

@@ -21,7 +21,9 @@
         "nodemailer": "^6.8.0",
         "sequelize": "^6.25.4",
         "swagger-ui-express": "^4.6.0",
-        "uuid": "^9.0.0"
+        "uuid": "^9.0.0",
+        "winston": "^3.8.2",
+        "winston-daily-rotate-file": "^4.7.1"
     },
     "devDependencies": {
         "nodemon": "^2.0.7"
