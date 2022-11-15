@@ -1,11 +1,8 @@
 const events = require("events"),
   { HelperFunction } = require("../common/helper"),
   { ConstantMembers } = require("../common/members"),
-  { FROM_MAIL } = require("../../env"),
-  em = new events.EventEmitter(),
-  mailDetails = {
-    from: FROM_MAIL,
-  };
+  { mailDetails } = require("../common/utils"),
+  em = new events.EventEmitter();
 
 em.on("register", async function (data) {
   mailDetails.to = data.email;

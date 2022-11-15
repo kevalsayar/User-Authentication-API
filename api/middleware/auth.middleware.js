@@ -4,7 +4,7 @@ const { PersistentTokenModel } = require("../user/user.queries"),
 
 const authMiddleware = function () {
   /**
-   * @description check bearer token exist or not
+   * @description checks if bearer token exists or not
    * @param {Request} req
    * @param {Response} res
    * @param {NextFunction} next

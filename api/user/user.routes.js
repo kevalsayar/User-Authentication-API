@@ -6,7 +6,7 @@ const router = require("express").Router(),
   { ConstantMembers } = require("../common/members");
 
 router.get(
-  "/details/:uuid?",
+  ConstantMembers.ENDPOINTS.GET_DETAILS,
   [authMiddleware.auth],
   UserHandler.fetchUserDetails
 );
@@ -29,7 +29,7 @@ router.post(
   UserHandler.userLogout
 );
 
-router.patch("/verify/:uuidhash", UserHandler.verifyUserEmail);
+router.patch(ConstantMembers.ENDPOINTS.VERIFY, UserHandler.verifyUserEmail);
 
 router.patch(
   ConstantMembers.ENDPOINTS.PASSWORD_UPDATE,
@@ -50,7 +50,7 @@ router.delete(
 );
 
 router.post(
-  "/search",
+  ConstantMembers.ENDPOINTS.SEARCH,
   [
     authMiddleware.auth,
     reqMiddleware.validateReqBody(validationSchemas.searchReqSchema),

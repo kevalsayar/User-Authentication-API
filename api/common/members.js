@@ -51,7 +51,9 @@ const ConstantMembers = function () {
     REGISTER: "/register",
     LOGIN: "/login",
     PASSWORD_UPDATE: "/passupdate",
-    VERIFY: "/verify",
+    VERIFY: "/verify/:uuidhash",
+    GET_DETAILS: "/details/:uuid?",
+    SEARCH: "/search",
     DELETE: "/delete",
     LOGOUT: "/logout",
   });
