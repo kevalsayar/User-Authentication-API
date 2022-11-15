@@ -4,6 +4,7 @@ const ConstantMembers = function () {
       "token-not-provided": "Please provide a JWT token!",
       "bearer-token-required": "Bearer Token required!",
       "token-not-found": "Token not found, Please login!",
+      "token-expired": "JWT Expired, Please login again!",
     },
     data: {
       success: "Data Fetched!",

@@ -8,6 +8,7 @@ const { createHmac, generateKeyPair } = require("crypto"),
   { REQUEST_CODE, STATUS, Messages } = require("./members"),
   { SECRET_KEY, PASS_ENCRYPTION, ALGORITHM, EXPIRES_IN } = require("../../env"),
   { logger } = require("../config/logger.config"),
+  { options } = require("./utils"),
   { mailTransporter } = require("../config/mail.config");
 
 const HelperFunction = function () {
@@ -85,12 +86,7 @@ const HelperFunction = function () {
         },
         (err, publicKey, privateKey) => {
           if (!err) {
-            const token = jwt.sign(
-              data,
-              privateKey,
-              { algorithm: ALGORITHM },
-              { expiresIn: EXPIRES_IN }
-            );
+            const token = jwt.sign(data, privateKey, options);
             resolve({
               publicKey,
               token,
@@ -110,8 +106,13 @@ const HelperFunction = function () {
    * @returns
    */
   const verifyToken = function (token, publicKey) {
-    const payload = jwt.verify(token, publicKey);
-    return payload;
+    try {
+      jwt.verify(token, publicKey, options);
+      return true;
+    } catch (error) {
+      logger.error(error);
+      return false;
+    }
   };
 
   /**
@@ -149,6 +150,7 @@ const HelperFunction = function () {
             const html = HandleBarsFunction(data);
             resolve(html);
           } else {
+            logger.error(err);
             rejects(err);
           }
         }

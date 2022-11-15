@@ -17,11 +17,26 @@ const authMiddleware = function () {
           jwtToken.split(" ")[1]
         );
         if (persistentToken) {
-          HelperFunction.verifyToken(
-            persistentToken.jwt,
-            persistentToken.publicKey
-          );
-          next();
+          if (
+            HelperFunction.verifyToken(
+              persistentToken.jwt,
+              persistentToken.publicKey
+            )
+          ) {
+            next();
+          } else {
+            if (PersistentTokenModel.removeToken(persistentToken.jwt)) {
+              res
+                .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+                .json(
+                  HelperFunction.showResponse(
+                    ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+                    ConstantMembers.STATUS.FALSE,
+                    ConstantMembers.Messages.token["token-expired"]
+                  )
+                );
+            }
+          }
         } else {
           res
             .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
