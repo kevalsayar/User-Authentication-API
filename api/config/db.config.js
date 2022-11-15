@@ -1,3 +1,5 @@
+// DB configurations
+
 const { Sequelize } = require("sequelize"),
   {
     DB_HOST,

@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = {
+  BASE_URL: process.env.BASE_URL,
   PORT: process.env.PORT,
   DB_HOST: process.env.DB_HOST,
   DB_USERNAME: process.env.DB_USERNAME,

@@ -1,3 +1,5 @@
+// Email configurations
+
 const nodemailer = require("nodemailer"),
   { MAIL_USER, MAIL_PASS, MAIL_HOST, MAIL_PORT } = require("../../env"),
   mailTransporter = nodemailer.createTransport({

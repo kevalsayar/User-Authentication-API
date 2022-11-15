@@ -11,6 +11,14 @@ const { createHmac, generateKeyPair } = require("crypto"),
   { mailTransporter } = require("../config/mail.config");
 
 const HelperFunction = function () {
+  /**
+   * @description create response payload
+   * @param { 400 | 401 | 500 | 200 | 201} code - defines response's code
+   * @param { boolean } status - defines request's success or failure
+   * @param { string } message - defines message
+   * @param { string } data - an optional parameter to pass data
+   * @returns
+   */
   const showResponse = function (code, status, message, data = null) {
     const response = { code, status, message };
     if (data) response.data = data;
@@ -50,6 +58,11 @@ const HelperFunction = function () {
     }
   };
 
+  /**
+   * @description generates hash of provided string
+   * @param {Object} data
+   * @returns
+   */
   const generateHash = function (data) {
     const hash = createHmac(PASS_ENCRYPTION, SECRET_KEY);
     return hash.update(data).digest("hex");
@@ -90,11 +103,23 @@ const HelperFunction = function () {
     });
   };
 
+  /**
+   * @description verify jwt token
+   * @param {String} token
+   * @param {String} publicKey
+   * @returns
+   */
   const verifyToken = function (token, publicKey) {
     const payload = jwt.verify(token, publicKey);
     return payload;
   };
 
+  /**
+   * @description send email
+   * @param {Object} mailDetails
+   * @param {string} templateName
+   * @param {Object} data
+   */
   const sendEmail = async function (mailDetails, templateName, data) {
     const html = await getTemplate(templateName, data);
     mailDetails.html = html;
@@ -107,6 +132,12 @@ const HelperFunction = function () {
     }
   };
 
+  /**
+   * @description get template to send in email
+   * @param { string } templateName
+   * @param { Object } data
+   * @returns
+   */
   const getTemplate = async function (templateName, data) {
     return new Promise((resolve, rejects) => {
       fs.readFile(

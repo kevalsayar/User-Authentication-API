@@ -2,7 +2,7 @@ const router = require("express").Router(),
   { UserHandler } = require("./user.handlers"),
   { reqMiddleware } = require("../middleware/request.middleware"),
   { authMiddleware } = require("../middleware/auth.middleware"),
-  { validationSchemas } = require("../common/validationSchema"),
+  { validationSchemas } = require("./user.validationSchema"),
   { ConstantMembers } = require("../common/members");
 
 router.get(
