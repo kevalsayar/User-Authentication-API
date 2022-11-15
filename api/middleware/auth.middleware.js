@@ -3,6 +3,12 @@ const { PersistentTokenModel } = require("../user/user.queries"),
   { ConstantMembers } = require("../common/members");
 
 const authMiddleware = function () {
+  /**
+   * @description check bearer token exist or not
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
   const auth = async function (req, res, next) {
     if (req.headers.authorization) {
       const jwtToken = req.headers.authorization;

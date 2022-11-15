@@ -2,6 +2,11 @@ const { HelperFunction } = require("../common/helper"),
   { ConstantMembers } = require("../common/members");
 
 const requestMiddleware = function () {
+  /**
+   * @description validates request body
+   * @param {Joi.Schema} reqSchema
+   * @returns
+   */
   const validateReqBody = function (reqSchema) {
     return (req, res, next) => {
       if (req.body) {
@@ -25,6 +30,11 @@ const requestMiddleware = function () {
     };
   };
 
+  /**
+   * @description validates query param
+   * @param {Joi.Schema} queryParamSchema
+   * @returns
+   */
   const validateQueryParam = function (queryParamSchema) {
     return (req, res, next) => {
       if (req.query.page_num && req.query.record_limit) {

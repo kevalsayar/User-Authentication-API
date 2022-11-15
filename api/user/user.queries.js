@@ -2,6 +2,11 @@ const { Op } = require("sequelize"),
   { UserModel, PersistentTokensModel } = require("./user.model");
 
 const UserQueries = function () {
+  /**
+   * @description create user
+   * @param {User} user
+   * @returns
+   */
   const createUser = async function (user) {
     const results = await UserModel.create({
       uuid: user?.uuid,
@@ -15,6 +20,12 @@ const UserQueries = function () {
     return results ? results.dataValues : false;
   };
 
+  /**
+   * @description checks verification of user
+   * @param {String} columnName
+   * @param {String} val
+   * @returns
+   */
   const userVerificationStatus = async function (columnName, val) {
     const results = await UserModel.findOne({
       where: {
@@ -25,6 +36,12 @@ const UserQueries = function () {
     return results.dataValues["is_verified"] ? true : false;
   };
 
+  /**
+   * @description checks existance of user
+   * @param {String} columnName
+   * @param {String} val
+   * @returns
+   */
   const checkUserExistance = async function (columnName, val) {
     const results = await UserModel.findOne({
       where: {
@@ -34,6 +51,12 @@ const UserQueries = function () {
     return results;
   };
 
+  /**
+   * @description returns details of a particular user
+   * @param {String} columnName
+   * @param {String} val
+   * @returns
+   */
   const getSingleUser = async function (columnName, val) {
     const results = await UserModel.findOne({
       where: {
@@ -53,6 +76,10 @@ const UserQueries = function () {
     return results;
   };
 
+  /**
+   * @description returns details of all users
+   * @returns
+   */
   const getAllUsers = async function () {
     const results = await UserModel.findAll({
       raw: true,
@@ -70,6 +97,12 @@ const UserQueries = function () {
     return results;
   };
 
+  /**
+   * @description updates password of a particular user
+   * @param {String} email
+   * @param {String} newPassword
+   * @returns
+   */
   const userPassUpdate = async function (email, newPassword) {
     const results = await UserModel.update(
       {
@@ -84,6 +117,11 @@ const UserQueries = function () {
     return results ? true : false;
   };
 
+  /**
+   * @description remove user record from database
+   * @param {String} uuid
+   * @returns
+   */
   const removeUser = async function (uuid) {
     const results = await UserModel.destroy({
       where: {
@@ -93,6 +131,13 @@ const UserQueries = function () {
     return results ? true : false;
   };
 
+  /**
+   * @description searches string against user details
+   * @param {String} searchString
+   * @param {Number} offset
+   * @param {Number} limit
+   * @returns
+   */
   const searchInfo = async (searchString, offset = 0, limit = 10) => {
     const queryResult = await UserModel.findAndCountAll({
       raw: true,
@@ -123,6 +168,11 @@ const UserQueries = function () {
     return queryResult;
   };
 
+  /**
+   * @description verfies user
+   * @param {String} uuidhash
+   * @returns
+   */
   const userVerificationUpdate = async function (uuidhash) {
     const results = await UserModel.update(
       {
@@ -151,6 +201,12 @@ const UserQueries = function () {
 };
 
 const PersistentTokensQueries = function () {
+  /**
+   * @param {String} token
+   * @param {String} publicKey
+   * @param {String} uuid
+   * @returns
+   */
   const addNewUserToken = async function (token, publicKey, uuid) {
     const results = await PersistentTokensModel.create({
       uuid: uuid,
@@ -160,6 +216,12 @@ const PersistentTokensQueries = function () {
     return results;
   };
 
+  /**
+   * @description checks existance of user
+   * @param {String} columnName
+   * @param {String} val
+   * @returns
+   */
   const checkUserExistance = async function (columnName, val) {
     const results = await PersistentTokensModel.findOne({
       where: {
@@ -169,6 +231,10 @@ const PersistentTokensQueries = function () {
     return results;
   };
 
+  /**
+   * @param {String} jwt
+   * @returns
+   */
   const getPublicKey = async function (jwt) {
     const results = await PersistentTokensModel.findOne({
       raw: true,
@@ -180,6 +246,11 @@ const PersistentTokensQueries = function () {
     return results ? results : false;
   };
 
+  /**
+   * @description remove jwt token record from database
+   * @param {String} jwt
+   * @returns
+   */
   const removeToken = async function (jwt) {
     const results = await PersistentTokensModel.destroy({
       where: {
