@@ -2,7 +2,8 @@ const { HelperFunction } = require("../common/helper"),
   { UserModel, PersistentTokenModel } = require("./user.queries"),
   { ConstantMembers } = require("../common/members"),
   { em } = require("../pubsub/index"),
-  { v4: uuidv4 } = require("uuid");
+  { v4: uuidv4 } = require("uuid"),
+  { logger } = require("../config/logger.config");
 
 const UserServices = function () {
   const register = async function (userInfo) {
@@ -203,6 +204,7 @@ const UserServices = function () {
         }
       );
     } catch (error) {
+      logger.error(error);
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.INTERNAL_SERVER_ERROR,
         false,
