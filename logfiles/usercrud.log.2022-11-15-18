@@ -1,0 +1,12 @@
+{"level":"info","message":"Server's listening on port 3000...."}
+{"level":"info","message":"Executing (default): SELECT 1+1 AS result"}
+{"level":"info","message":"Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'users' AND TABLE_SCHEMA = 'testtable'"}
+{"level":"info","message":"Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'persistent_tokens' AND TABLE_SCHEMA = 'testtable'"}
+{"level":"info","message":"Database Connection's been established successfully!"}
+{"level":"info","message":"Executing (default): SHOW INDEX FROM `users`"}
+{"level":"info","message":"Executing (default): SHOW INDEX FROM `persistent_tokens`"}
+{"level":"info","message":"Executing (default): SELECT `jwt`, `publicKey` FROM `persistent_tokens` AS `persistent_tokens` WHERE `persistent_tokens`.`jwt` = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njg1MTQ3NTAsImV4cCI6MTY2ODUxNDg3MH0.AAAAAHqtEPSMXQlMeLjpFamUUVE9nD-44uI7bIwPly4AAAAAAlMFsRrZBIdj6uE71lPvkAxv6SPcsDJ1khkdzg' LIMIT 1;"}
+{"expiredAt":"2022-11-15T12:21:10.000Z","level":"error","message":"jwt expired","name":"TokenExpiredError"}
+{"expiredAt":"2022-11-15T12:21:10.000Z","level":"error","message":"jwt expired","name":"TokenExpiredError"}
+{"level":"info","message":"Executing (default): DELETE FROM `persistent_tokens` WHERE `jwt` = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njg1MTQ3NTAsImV4cCI6MTY2ODUxNDg3MH0.AAAAAHqtEPSMXQlMeLjpFamUUVE9nD-44uI7bIwPly4AAAAAAlMFsRrZBIdj6uE71lPvkAxv6SPcsDJ1khkdzg'"}
+{"level":"info","message":"Executing (default): SELECT `jwt`, `publicKey` FROM `persistent_tokens` AS `persistent_tokens` WHERE `persistent_tokens`.`jwt` = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njg1MTQ3NTAsImV4cCI6MTY2ODUxNDg3MH0.AAAAAHqtEPSMXQlMeLjpFamUUVE9nD-44uI7bIwPly4AAAAAAlMFsRrZBIdj6uE71lPvkAxv6SPcsDJ1khkdzg' LIMIT 1;"}

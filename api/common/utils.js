@@ -6,9 +6,14 @@ const options = {
   },
   mailDetails = {
     from: FROM_MAIL,
+  },
+  swaggerOptions = {
+    swaggerOptions: { filter: "", persistAuthorization: true },
+    customSiteTitle: "User Authentication Swagger",
   };
 
 module.exports = {
   options,
   mailDetails,
+  swaggerOptions,
 };

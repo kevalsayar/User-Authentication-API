@@ -6,6 +6,7 @@ const express = require("express"),
   { serve, setup } = require("swagger-ui-express"),
   swaggerDoc = require("./openapi.json"),
   { logger } = require("./api/config/logger.config"),
+  { swaggerOptions } = require("./api/common/utils"),
   app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,14 +15,7 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
-app.use(
-  "/apidocs",
-  serve,
-  setup(swaggerDoc, {
-    swaggerOptions: { filter: "", persistAuthorization: true },
-    customSiteTitle: "User Authentication Swagger",
-  })
-);
+app.use("/apidocs", serve, setup(swaggerDoc, swaggerOptions));
 
 app.use("/api/v1", indexRouter);
 
