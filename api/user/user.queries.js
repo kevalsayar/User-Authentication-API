@@ -48,7 +48,7 @@ const UserQueries = function () {
         [columnName]: val,
       },
     });
-    return results ? true : false;
+    return results ? results : false;
   };
 
   /**

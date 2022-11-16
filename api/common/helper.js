@@ -142,7 +142,14 @@ const HelperFunction = function () {
   const getTemplate = async function (templateName, data) {
     return new Promise((resolve, rejects) => {
       fs.readFile(
-        path.join(__dirname, "..", "templates", templateName, "index.html"),
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "templates",
+          templateName,
+          "index.html"
+        ),
         function (err, fileData) {
           if (!err) {
             const template = fileData.toString();
