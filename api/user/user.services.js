@@ -245,14 +245,6 @@ const UserServices = function () {
   };
 
   const uploadImage = async function (userInfo) {
-    const isExist = await UserModel.checkUserExistance("uuid", userInfo.uuid);
-    if (!isExist) {
-      return HelperFunction.showResponse(
-        ConstantMembers.REQUEST_CODE.BAD_REQUEST,
-        ConstantMembers.STATUS.FALSE,
-        ConstantMembers.Messages.user["no-user-found"]
-      );
-    }
     const result = await UserModel.userProfilePictureUpdate(userInfo);
     if (result) {
       return HelperFunction.showResponse(
