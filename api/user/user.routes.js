@@ -61,7 +61,7 @@ router.post(
 );
 
 router.post(
-  "/updateprofilepic/:uuid",
+  ConstantMembers.ENDPOINTS.PROFILE_PIC_UPDATE,
   [
     authMiddleware.auth,
     reqMiddleware.checkUserExists,

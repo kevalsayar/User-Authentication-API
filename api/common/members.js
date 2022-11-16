@@ -56,6 +56,7 @@ const ConstantMembers = function () {
     REGISTER: "/register",
     LOGIN: "/login",
     PASSWORD_UPDATE: "/passupdate",
+    PROFILE_PIC_UPDATE: "/updateprofilepic/:uuid",
     VERIFY: "/verify/:uuidhash",
     GET_DETAILS: "/details/:uuid?",
     SEARCH: "/search",
