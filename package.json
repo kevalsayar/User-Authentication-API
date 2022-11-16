@@ -4,8 +4,7 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "start": "nodemon app.js",
-        "gen:doc": "apidoc -i api/ -o doc/"
+        "start": "nodemon app.js"
     },
     "keywords": [],
     "author": "",
