@@ -620,6 +620,81 @@
                     }
                 }
             }
+        },
+        "/user/updateprofilepic/{uuid}": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "description": "update user's profile picture",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "name": "uuid",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "user's uuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "request body of update user's profile pic",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "nullable": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Image Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "default": 201
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Image Successfully uploaded!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    }
+                }
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ router.post(
   UserHandler.searchHandler
 );
 
-router.post(
+router.patch(
   ConstantMembers.ENDPOINTS.PROFILE_PIC_UPDATE,
   [
     authMiddleware.auth,
