@@ -48,7 +48,7 @@ const UserQueries = function () {
         [columnName]: val,
       },
     });
-    return results;
+    return results ? true : false;
   };
 
   /**
@@ -111,6 +111,20 @@ const UserQueries = function () {
       {
         where: {
           email,
+        },
+      }
+    );
+    return results ? true : false;
+  };
+
+  const userProfilePictureUpdate = async function (fileInfo) {
+    const results = await UserModel.update(
+      {
+        profile_picture: fileInfo?.filename,
+      },
+      {
+        where: {
+          uuid: fileInfo?.uuid,
         },
       }
     );
@@ -197,6 +211,7 @@ const UserQueries = function () {
     searchInfo,
     userVerificationStatus,
     userVerificationUpdate,
+    userProfilePictureUpdate,
   };
 };
 

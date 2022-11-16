@@ -3,6 +3,7 @@ const router = require("express").Router(),
   { reqMiddleware } = require("../middleware/request.middleware"),
   { authMiddleware } = require("../middleware/auth.middleware"),
   { validationSchemas } = require("./user.validationSchema"),
+  { upload } = require("../common/utils"),
   { ConstantMembers } = require("../common/members");
 
 router.get(
@@ -13,7 +14,7 @@ router.get(
 
 router.post(
   ConstantMembers.ENDPOINTS.REGISTER,
-  [reqMiddleware.validateReqBody(validationSchemas.registerUserSchema)],
+  reqMiddleware.validateReqBody(validationSchemas.registerUserSchema),
   UserHandler.registerUser
 );
 
@@ -57,6 +58,17 @@ router.post(
     reqMiddleware.validateQueryParam(validationSchemas.paginationParams),
   ],
   UserHandler.searchHandler
+);
+
+router.post(
+  "/updateprofilepic/:uuid",
+  [
+    authMiddleware.auth,
+    reqMiddleware.checkUserExists,
+    upload.single("image"),
+    reqMiddleware.checkImageExists,
+  ],
+  UserHandler.uploadUserImage
 );
 
 module.exports = router;

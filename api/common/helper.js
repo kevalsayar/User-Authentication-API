@@ -31,7 +31,7 @@ const HelperFunction = function () {
       path.join(__dirname, "..", "userdata", `${fileName}.json`),
       JSON.stringify(data),
       (err) => {
-        if (err) logger.error(err)(err);
+        if (err) logger.error(err.message)(err);
         logger.info("Done Writing!");
       }
     );
@@ -110,7 +110,7 @@ const HelperFunction = function () {
       jwt.verify(token, publicKey, options);
       return true;
     } catch (error) {
-      logger.error(error);
+      logger.error(error.message);
       return false;
     }
   };
@@ -129,7 +129,7 @@ const HelperFunction = function () {
         if (!err) logger.info(`Email sent successfully to ${data.name}`);
       });
     } catch (error) {
-      logger.error(error);
+      logger.error(error.message);
     }
   };
 
@@ -150,7 +150,7 @@ const HelperFunction = function () {
             const html = HandleBarsFunction(data);
             resolve(html);
           } else {
-            logger.error(err);
+            logger.error(err.message);
             rejects(err);
           }
         }

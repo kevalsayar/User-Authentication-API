@@ -1,5 +1,10 @@
 const ConstantMembers = function () {
   const Messages = {
+    image: {
+      "image-uploaded": "Image Successfully uploaded!",
+      "imagetype-not-supported": "Please insert an appropriate image!",
+      "image-not-uploaded": "Image hasn't been uploaded, please try again!",
+    },
     token: {
       "token-not-provided": "Please provide a JWT token!",
       "bearer-token-required": "Bearer Token required!",

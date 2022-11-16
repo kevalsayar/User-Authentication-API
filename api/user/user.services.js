@@ -204,7 +204,7 @@ const UserServices = function () {
         }
       );
     } catch (error) {
-      logger.error(error);
+      logger.error(error.message);
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.INTERNAL_SERVER_ERROR,
         false,
@@ -244,6 +244,25 @@ const UserServices = function () {
     );
   };
 
+  const uploadImage = async function (userInfo) {
+    const isExist = await UserModel.checkUserExistance("uuid", userInfo.uuid);
+    if (!isExist) {
+      return HelperFunction.showResponse(
+        ConstantMembers.REQUEST_CODE.BAD_REQUEST,
+        ConstantMembers.STATUS.FALSE,
+        ConstantMembers.Messages.user["no-user-found"]
+      );
+    }
+    const result = await UserModel.userProfilePictureUpdate(userInfo);
+    if (result) {
+      return HelperFunction.showResponse(
+        ConstantMembers.REQUEST_CODE.ENTRY_ADDED,
+        ConstantMembers.STATUS.TRUE,
+        ConstantMembers.Messages.image["image-uploaded"]
+      );
+    }
+  };
+
   return {
     register,
     userDetails,
@@ -253,6 +272,7 @@ const UserServices = function () {
     removeUserFromDB,
     searchInfoOfDeal,
     verifyUser,
+    uploadImage,
   };
 };
 

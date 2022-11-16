@@ -28,6 +28,9 @@ const UserModel = db.define("user", {
   is_verified: {
     type: DataTypes.BOOLEAN,
   },
+  profile_picture: {
+    type: DataTypes.STRING,
+  },
 });
 
 const PersistentTokensModel = db.define("persistent_tokens", {

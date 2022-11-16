@@ -25,4 +25,5 @@ module.exports = {
   FOLDER_PATH: process.env.FOLDER_PATH,
   ALGORITHM: process.env.ALGORITHM,
   EXPIRES_IN: process.env.EXPIRES_IN,
+  FILE_SIZE: process.env.FILE_SIZE,
 };

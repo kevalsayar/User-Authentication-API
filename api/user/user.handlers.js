@@ -2,7 +2,7 @@ const { UserService } = require("./user.services");
 
 const UserHandlers = function () {
   const registerUser = async function (req, res) {
-    const response = await UserService.register(req.body);
+    const response = await UserService.register({ ...req.body });
     res.status(response.code).json(response);
   };
 
@@ -46,6 +46,14 @@ const UserHandlers = function () {
     res.status(response.code).json(response);
   };
 
+  const uploadUserImage = async function (req, res) {
+    const response = await UserService.uploadImage({
+      ...req.params,
+      ...req.file,
+    });
+    res.status(response.code).json(response);
+  };
+
   return {
     registerUser,
     fetchUserDetails,
@@ -55,6 +63,7 @@ const UserHandlers = function () {
     deleteUser,
     searchHandler,
     verifyUserEmail,
+    uploadUserImage,
   };
 };
 
