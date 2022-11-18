@@ -7,12 +7,12 @@ const { HelperFunction } = require("../common/helper"),
 
 const UserServices = function () {
   const register = async function (userInfo) {
-    const { email, language } = userInfo;
+    const { email } = userInfo;
     if (await UserModel.checkUserExistance("email", email)) {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.BAD_REQUEST,
         ConstantMembers.STATUS.FALSE,
-        language("user.user-exists")
+        ConstantMembers.Messages.user["user-exists"]
       );
     } else {
       userInfo.password = HelperFunction.generateHash(userInfo.password);
@@ -25,7 +25,7 @@ const UserServices = function () {
         return HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.ENTRY_ADDED,
           ConstantMembers.STATUS.TRUE,
-          language("user.user-registered")
+          ConstantMembers.Messages.user["user-registered"]
         );
       }
     }
@@ -39,13 +39,13 @@ const UserServices = function () {
         return HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.BAD_REQUEST,
           ConstantMembers.STATUS.FALSE,
-          language("user.uuid-does-not-exist")
+          ConstantMembers.Messages.user["uuid-does-not-exist"]
         );
       } else {
         return HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.SUCCESS,
           ConstantMembers.STATUS.TRUE,
-          language("data.success"),
+          ConstantMembers.Messages.data.success,
           isExist
         );
       }
@@ -53,7 +53,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.SUCCESS,
         ConstantMembers.STATUS.TRUE,
-        language("data.success"),
+        ConstantMembers.Messages.data.success,
         await UserModel.getAllUsers()
       );
     }
@@ -66,7 +66,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.BAD_REQUEST,
         ConstantMembers.STATUS.FALSE,
-        language("user.no-user-found")
+        ConstantMembers.Messages.user["no-user-found"]
       );
     }
     const result = await UserModel.userPassUpdate(
@@ -77,7 +77,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.SUCCESS,
         ConstantMembers.STATUS.TRUE,
-        language("user.password-update-success")
+        ConstantMembers.Messages.user["password-update-success"]
       );
     }
   };
@@ -89,7 +89,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.BAD_REQUEST,
         ConstantMembers.STATUS.FALSE,
-        language("user.no-user-found")
+        ConstantMembers.Messages.user["no-user-found"]
       );
     }
     const verified = await UserModel.userVerificationStatus("email", email);
@@ -115,7 +115,7 @@ const UserServices = function () {
             return HelperFunction.showResponse(
               ConstantMembers.REQUEST_CODE.SUCCESS,
               ConstantMembers.STATUS.TRUE,
-              language("user.login-success"),
+              ConstantMembers.Messages.user["login-success"],
               { token }
             );
           }
@@ -123,21 +123,21 @@ const UserServices = function () {
           return HelperFunction.showResponse(
             ConstantMembers.REQUEST_CODE.BAD_REQUEST,
             ConstantMembers.STATUS.FALSE,
-            language("user.wrong-password")
+            ConstantMembers.Messages.user["wrong-password"]
           );
         }
       } else {
         return HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.BAD_REQUEST,
           ConstantMembers.STATUS.FALSE,
-          language("user.login-error")
+          ConstantMembers.Messages.user["login-error"]
         );
       }
     }
     return HelperFunction.showResponse(
       ConstantMembers.REQUEST_CODE.BAD_REQUEST,
       ConstantMembers.STATUS.FALSE,
-      language("user.user-not-verified")
+      ConstantMembers.Messages.user["user-not-verified"]
     );
   };
 
@@ -146,12 +146,12 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.SUCCESS,
         ConstantMembers.STATUS.TRUE,
-        language("user.logout-success")
+        ConstantMembers.Messages.user["logout-success"]
       );
     return HelperFunction.showResponse(
       ConstantMembers.REQUEST_CODE.BAD_REQUEST,
       ConstantMembers.STATUS.FALSE,
-      language("user.logout-error")
+      ConstantMembers.Messages.user["logout-error"]
     );
   };
 
@@ -161,19 +161,19 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.BAD_REQUEST,
         ConstantMembers.STATUS.FALSE,
-        language("user.no-user-found")
+        ConstantMembers.Messages.user["no-user-found"]
       );
     }
     if (await UserModel.removeUser(uuid))
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.SUCCESS,
         ConstantMembers.STATUS.TRUE,
-        language("user.user-delete-success")
+        ConstantMembers.Messages.user["user-delete-success"]
       );
     return HelperFunction.showResponse(
       ConstantMembers.REQUEST_CODE.BAD_REQUEST,
       ConstantMembers.STATUS.FALSE,
-      language("user.user-delete-error")
+      ConstantMembers.Messages.user["user-delete-error"]
     );
   };
 
@@ -220,7 +220,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.BAD_REQUEST,
         ConstantMembers.STATUS.FALSE,
-        language("user.no-user-found")
+        ConstantMembers.Messages.user["no-user-found"]
       );
     }
     const verified = await UserModel.userVerificationStatus(
@@ -233,14 +233,14 @@ const UserServices = function () {
         return HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.SUCCESS,
           ConstantMembers.STATUS.TRUE,
-          language("user.user-verification-done")
+          ConstantMembers.Messages.user["user-verification-done"]
         );
       }
     }
     return HelperFunction.showResponse(
       ConstantMembers.REQUEST_CODE.SUCCESS,
       ConstantMembers.STATUS.TRUE,
-      language("user.user-already-verified")
+      ConstantMembers.Messages.user["user-already-verified"]
     );
   };
 
@@ -250,7 +250,7 @@ const UserServices = function () {
       return HelperFunction.showResponse(
         ConstantMembers.REQUEST_CODE.ENTRY_ADDED,
         ConstantMembers.STATUS.TRUE,
-        language("user.image-uploaded")
+        ConstantMembers.Messages.image["image-uploaded"]
       );
     }
   };

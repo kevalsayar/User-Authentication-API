@@ -165,6 +165,11 @@ const HelperFunction = function () {
     });
   };
 
+  const specificLangData = async function (response, translate) {
+    response.message = translate(response.message);
+    return response;
+  };
+
   return {
     showResponse,
     writeFile,
@@ -174,6 +179,7 @@ const HelperFunction = function () {
     verifyToken,
     sendEmail,
     getTemplate,
+    specificLangData,
   };
 };
 
