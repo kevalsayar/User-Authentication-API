@@ -2,7 +2,10 @@ const { UserService } = require("./user.services");
 
 const UserHandlers = function () {
   const registerUser = async function (req, res) {
-    const response = await UserService.register({ ...req.body });
+    const response = await UserService.register({
+      ...req.body,
+      language: req.t,
+    });
     res.status(response.code).json(response);
   };
 
