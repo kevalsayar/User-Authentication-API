@@ -26,49 +26,45 @@ const authMiddleware = function () {
             next();
           } else {
             if (PersistentTokenModel.removeToken(persistentToken.jwt)) {
+              const response = HelperFunction.showResponse(
+                ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+                ConstantMembers.STATUS.FALSE,
+                ConstantMembers.Messages.token["token-expired"]
+              );
               res
                 .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
-                .json(
-                  HelperFunction.showResponse(
-                    ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
-                    ConstantMembers.STATUS.FALSE,
-                    ConstantMembers.Messages.token["token-expired"]
-                  )
-                );
+                .json(await HelperFunction.specificLangData(response, req.t));
             }
           }
         } else {
-          res
-            .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
-            .json(
-              HelperFunction.showResponse(
-                ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
-                ConstantMembers.STATUS.FALSE,
-                ConstantMembers.Messages.token["token-not-found"]
-              )
-            );
-        }
-      } else {
-        res
-          .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
-          .json(
-            HelperFunction.showResponse(
-              ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
-              ConstantMembers.STATUS.FALSE,
-              ConstantMembers.Messages.token["bearer-token-required"]
-            )
-          );
-      }
-    } else {
-      res
-        .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
-        .json(
-          HelperFunction.showResponse(
+          const response = HelperFunction.showResponse(
             ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
             ConstantMembers.STATUS.FALSE,
-            ConstantMembers.Messages.token["token-not-provided"]
-          )
+            ConstantMembers.Messages.token["token-not-found"]
+          );
+          res
+            .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+            .json(await HelperFunction.specificLangData(response, req.t));
+        }
+      } else {
+        const response = HelperFunction.showResponse(
+          ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+          ConstantMembers.STATUS.FALSE,
+          ConstantMembers.Messages.token["bearer-token-required"]
         );
+        res
+          .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+          .json(await HelperFunction.specificLangData(response, req.t));
+      }
+    } else {
+      const response = HelperFunction.showResponse(
+        ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER,
+        ConstantMembers.STATUS.FALSE,
+        ConstantMembers.Messages.token["token-not-provided"]
+      );
+      res
+        .status(ConstantMembers.REQUEST_CODE.UNAUTHORIZED_USER)
+        .json(await HelperFunction.specificLangData(response, req.t));
     }
   };
 

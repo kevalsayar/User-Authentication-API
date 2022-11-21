@@ -12,9 +12,8 @@ const express = require("express"),
   middleware = require("i18next-http-middleware"),
   { i18nInit } = require("./api/config/i18n.config");
 
-i18next.use(backend).use(middleware.LanguageDetector).init(i18nInit);
-
 const app = express();
+i18next.use(backend).use(middleware.LanguageDetector).init(i18nInit);
 app.use(middleware.handle(i18next));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));

@@ -2,20 +2,32 @@ const { ALGORITHM, EXPIRES_IN, FROM_MAIL, FILE_SIZE } = require("../../env"),
   multer = require("multer"),
   path = require("path");
 
+/**
+ * JWT Generations Configs
+ */
 const options = {
   algorithm: ALGORITHM,
   expiresIn: EXPIRES_IN,
 };
 
+/**
+ * Mail Configs
+ */
 const mailDetails = {
   from: FROM_MAIL,
 };
 
+/**
+ * Swagger Configs
+ */
 const swaggerOptions = {
   swaggerOptions: { filter: "", persistAuthorization: true },
   customSiteTitle: "User Authentication Swagger",
 };
 
+/**
+ * File Upload Configs
+ */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./images");

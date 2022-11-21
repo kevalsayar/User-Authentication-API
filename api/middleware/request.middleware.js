@@ -11,7 +11,6 @@ const requestMiddleware = function () {
    */
   const validateReqBody = function (reqSchema) {
     return (req, res, next) => {
-      console.log(req.headers);
       if (req.body) {
         const { error } = reqSchema.validate(req.body);
         if (error) {
@@ -28,7 +27,9 @@ const requestMiddleware = function () {
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.request.validation["body-not-exist"]
         );
-        res.status(response.code).json(response);
+        res
+          .status(response.code)
+          .json(HelperFunction.specificLangData(response, req.t));
       }
     };
   };
@@ -48,7 +49,9 @@ const requestMiddleware = function () {
             ConstantMembers.STATUS.FALSE,
             error.message
           );
-          res.status(response.code).json(response);
+          res
+            .status(response.code)
+            .json(HelperFunction.specificLangData(response, req.t));
         } else next();
       } else {
         response = HelperFunction.showResponse(
@@ -56,7 +59,9 @@ const requestMiddleware = function () {
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.data.queryparams
         );
-        res.status(response.code).json(response);
+        res
+          .status(response.code)
+          .json(HelperFunction.specificLangData(response, req.t));
       }
     };
   };
@@ -90,7 +95,9 @@ const requestMiddleware = function () {
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.user["uuid-does-not-exist"]
         );
-        return res.status(response.code).json(response);
+        return res
+          .status(response.code)
+          .json(HelperFunction.specificLangData(response, req.t));
       }
       next();
     }

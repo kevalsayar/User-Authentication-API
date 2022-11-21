@@ -30,6 +30,19 @@
                 "description": "Security Schemas"
             }
         },
+        "parameters": {
+            "in": "header",
+            "name": "Accept-Language",
+            "schema": {
+                "type": "string",
+                "enum": [
+                    "en",
+                    "fr",
+                    "tr"
+                ],
+                "default": "en"
+            }
+        },
         "responses": {
             "201": {
                 "description": "New resource created",
@@ -116,16 +129,7 @@
                 "description": "user register routes",
                 "parameters": [
                     {
-                        "in": "header",
-                        "name": "Accept-Language",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "en",
-                                "fr",
-                                "de"
-                            ]
-                        }
+                        "$ref": "#/components/parameters"
                     }
                 ],
                 "requestBody": {
@@ -191,6 +195,11 @@
                 "description": "user login routes",
                 "tags": [
                     "user"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
+                    }
                 ],
                 "requestBody": {
                     "required": true,
@@ -278,6 +287,9 @@
                             "type": "string"
                         },
                         "description": "user's uuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters"
                     }
                 ],
                 "responses": {
@@ -357,6 +369,11 @@
                         "bearerAuth": []
                     }
                 ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "description": "request body for deleting a user with uuid",
@@ -416,6 +433,11 @@
                         "bearerAuth": []
                     }
                 ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
+                    }
+                ],
                 "description": "user logout route",
                 "responses": {
                     "200": {
@@ -460,6 +482,9 @@
                 ],
                 "description": "user search routes",
                 "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
+                    },
                     {
                         "in": "query",
                         "name": "page_num",
@@ -520,6 +545,11 @@
                 "security": [
                     {
                         "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
                     }
                 ],
                 "requestBody": {
@@ -592,6 +622,9 @@
                 ],
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters"
+                    },
+                    {
                         "in": "path",
                         "name": "uuidhash",
                         "schema": {
@@ -647,6 +680,9 @@
                     }
                 ],
                 "parameters": [
+                    {
+                        "$ref": "#/components/parameters"
+                    },
                     {
                         "in": "path",
                         "required": true,

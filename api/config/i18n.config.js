@@ -1,3 +1,6 @@
+/**
+ * i18n Configurations
+ */
 const i18nInit = {
   fallbackLng: "en",
   backend: {
