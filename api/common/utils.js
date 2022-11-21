@@ -1,4 +1,11 @@
-const { ALGORITHM, EXPIRES_IN, FROM_MAIL, FILE_SIZE } = require("../../env"),
+const {
+    ALGORITHM,
+    EXPIRES_IN,
+    FROM_MAIL,
+    FILE_SIZE,
+    IMAGE_UPLOAD,
+    MIMETYPES,
+  } = require("../../env"),
   multer = require("multer"),
   path = require("path");
 
@@ -30,7 +37,7 @@ const swaggerOptions = {
  */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./images");
+    cb(null, process.cwd() + `${IMAGE_UPLOAD}`);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -38,7 +45,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (_req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (MIMETYPES.split(", ").includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(null, false);

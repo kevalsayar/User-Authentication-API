@@ -1,10 +1,12 @@
 /**
  * i18n Configurations
  */
+const { LANGUAGES } = require("../../env");
+
 const i18nInit = {
   fallbackLng: "en",
   backend: {
-    loadPath: "./locales/{{lng}}/translation.json",
+    loadPath: process.cwd() + `${LANGUAGES}/{{lng}}/translation.json`,
   },
   objectNotation: true,
 };

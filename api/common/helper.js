@@ -6,7 +6,7 @@ const { createHmac, generateKeyPair } = require("crypto"),
   jwt = require("jsonwebtoken"),
   Handlebars = require("handlebars"),
   { REQUEST_CODE, STATUS, Messages } = require("./members"),
-  { SECRET_KEY, PASS_ENCRYPTION } = require("../../env"),
+  { SECRET_KEY, PASS_ENCRYPTION, TEMPLATES_PATH } = require("../../env"),
   { logger } = require("../config/logger.config"),
   { options } = require("./utils"),
   { mailTransporter } = require("../config/mail.config");
@@ -142,14 +142,7 @@ const HelperFunction = function () {
   const getTemplate = async function (templateName, data) {
     return new Promise((resolve, rejects) => {
       fs.readFile(
-        path.join(
-          __dirname,
-          "..",
-          "..",
-          "templates",
-          templateName,
-          "index.html"
-        ),
+        process.cwd() + `${TEMPLATES_PATH}${templateName}/index.html`,
         function (err, fileData) {
           if (!err) {
             const template = fileData.toString();

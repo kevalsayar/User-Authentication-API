@@ -1,7 +1,0 @@
-{"level":"info","message":"Server's listening on port 3000...."}
-{"level":"info","message":"Executing (default): SELECT 1+1 AS result"}
-{"level":"info","message":"Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'users' AND TABLE_SCHEMA = 'testtable'"}
-{"level":"info","message":"Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'persistent_tokens' AND TABLE_SCHEMA = 'testtable'"}
-{"level":"info","message":"Database Connection's been established successfully!"}
-{"level":"info","message":"Executing (default): SHOW INDEX FROM `users`"}
-{"level":"info","message":"Executing (default): SHOW INDEX FROM `persistent_tokens`"}

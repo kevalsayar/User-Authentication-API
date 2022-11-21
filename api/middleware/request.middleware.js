@@ -10,7 +10,7 @@ const requestMiddleware = function () {
    * @returns
    */
   const validateReqBody = function (reqSchema) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
       if (req.body) {
         const { error } = reqSchema.validate(req.body);
         if (error) {
@@ -19,7 +19,9 @@ const requestMiddleware = function () {
             ConstantMembers.STATUS.FALSE,
             error.message
           );
-          res.status(response.code).json(response);
+          res
+            .status(response.code)
+            .json(await HelperFunction.specificLangData(response, req.t));
         } else next();
       } else {
         const response = HelperFunction.showResponse(
@@ -29,7 +31,7 @@ const requestMiddleware = function () {
         );
         res
           .status(response.code)
-          .json(HelperFunction.specificLangData(response, req.t));
+          .json(await HelperFunction.specificLangData(response, req.t));
       }
     };
   };
@@ -40,7 +42,7 @@ const requestMiddleware = function () {
    * @returns
    */
   const validateQueryParam = function (queryParamSchema) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
       if (req.query.page_num && req.query.record_limit) {
         const { error } = queryParamSchema.validate(req.query);
         if (error) {
@@ -51,22 +53,22 @@ const requestMiddleware = function () {
           );
           res
             .status(response.code)
-            .json(HelperFunction.specificLangData(response, req.t));
+            .json(await HelperFunction.specificLangData(response, req.t));
         } else next();
       } else {
-        response = HelperFunction.showResponse(
+        const response = HelperFunction.showResponse(
           ConstantMembers.REQUEST_CODE.BAD_REQUEST,
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.data.queryparams
         );
         res
           .status(response.code)
-          .json(HelperFunction.specificLangData(response, req.t));
+          .json(await HelperFunction.specificLangData(response, req.t));
       }
     };
   };
 
-  const checkImageExists = (req, res, next) => {
+  const checkImageExists = async (req, res, next) => {
     try {
       if (!req.file) {
         const response = HelperFunction.showResponse(
@@ -74,7 +76,9 @@ const requestMiddleware = function () {
           ConstantMembers.STATUS.FALSE,
           ConstantMembers.Messages.image["image-not-uploaded"]
         );
-        return res.status(response.code).json(response);
+        return res
+          .status(response.code)
+          .json(await HelperFunction.specificLangData(response, req.t));
       } else {
         next();
       }
@@ -97,7 +101,7 @@ const requestMiddleware = function () {
         );
         return res
           .status(response.code)
-          .json(HelperFunction.specificLangData(response, req.t));
+          .json(await HelperFunction.specificLangData(response, req.t));
       }
       next();
     }
