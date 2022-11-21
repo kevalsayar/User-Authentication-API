@@ -5,15 +5,15 @@
         "image-not-uploaded": "Image hasn't been uploaded, please try again!"
     },
     "token": {
-        "token-not-provided": "Please provide a JWT token!",
-        "bearer-token-required": "Bearer Token required!",
-        "token-not-found": "Token not found, Please login!",
-        "token-expired": "JWT Expired, Please login again!"
+        "token-not-provided": "Veuillez fournir un jeton JWT!",
+        "bearer-token-required": "Jeton porteur requis!",
+        "token-not-found": "Jeton introuvable, veuillez vous connecter!",
+        "token-expired": "JWT expiré, veuillez vous reconnecter!"
     },
     "data": {
-        "success": "Data Fetched!",
-        "error": "Error Faced!",
-        "queryparams": "Error revolving query parameters!"
+        "success": "Données récupérées!",
+        "error": "Erreur rencontrée!",
+        "queryparams": "Erreur lors de la rotation des paramètres de requête!"
     },
     "user": {
         "user-registered": "User successfully registered!",
