@@ -2,11 +2,15 @@ const { createHmac, generateKeyPair } = require("crypto"),
   fs = require("fs"),
   { promisify } = require("util"),
   readFileAsync = promisify(fs.readFile),
-  path = require("path"),
   jwt = require("jsonwebtoken"),
   Handlebars = require("handlebars"),
   { REQUEST_CODE, STATUS, Messages } = require("./members"),
-  { SECRET_KEY, PASS_ENCRYPTION, TEMPLATES_PATH } = require("../../env"),
+  {
+    SECRET_KEY,
+    PASS_ENCRYPTION,
+    TEMPLATES_PATH,
+    ENCODING,
+  } = require("../../env"),
   { logger } = require("../config/logger.config"),
   { options } = require("./utils"),
   { mailTransporter } = require("../config/mail.config");
@@ -28,7 +32,7 @@ const HelperFunction = function () {
 
   const writeFile = function (fileName, data) {
     fs.writeFile(
-      path.join(__dirname, "..", "userdata", `${fileName}.json`),
+      process.cwd() + `/api/userdata/${fileName}.json`,
       JSON.stringify(data),
       (err) => {
         if (err) logger.error(err.message)(err);
@@ -40,16 +44,10 @@ const HelperFunction = function () {
   const readFile = async function (fileName) {
     try {
       const res = await readFileAsync(
-        path.join(__dirname, "..", "userdata", `${fileName}.json`),
+        process.cwd() + `/api/userdata/${fileName}.json`,
         "utf-8"
       );
       return JSON.parse(res);
-      // return showResponse(
-      //   REQUEST_CODE.SUCCESS,
-      //   STATUS.TRUE,
-      //   Messages.data.success,
-      //   JSON.parse(res)
-      // );
     } catch (error) {
       return showResponse(
         REQUEST_CODE.BAD_REQUEST,
@@ -66,7 +64,7 @@ const HelperFunction = function () {
    */
   const generateHash = function (data) {
     const hash = createHmac(PASS_ENCRYPTION, SECRET_KEY);
-    return hash.update(data).digest("hex");
+    return hash.update(data).digest(ENCODING);
   };
 
   const signAndGet = function (data) {

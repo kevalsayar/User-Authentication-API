@@ -26,9 +26,10 @@ module.exports = {
   EXPIRES_IN: process.env.EXPIRES_IN,
   FILE_SIZE: process.env.FILE_SIZE,
   IMAGE_UPLOAD: process.env.IMAGE_UPLOAD,
-  LANGUAGES: process.env.LANGUAGES,
+  LANGUAGE_PATH: process.env.LANGUAGE_PATH,
   TEMPLATES_PATH: process.env.TEMPLATES_PATH,
   LOGGER_ERROR_PATH: process.env.LOGGER_ERROR_PATH,
   LOGGER_COMBINED_PATH: process.env.LOGGER_COMBINED_PATH,
   MIMETYPES: process.env.MIMETYPES,
+  ENCODING: process.env.ENCODING,
 };
