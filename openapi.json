@@ -114,6 +114,20 @@
                     "user"
                 ],
                 "description": "user register routes",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Accept-Language",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "en",
+                                "fr",
+                                "de"
+                            ]
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "description": "request body for user registration",

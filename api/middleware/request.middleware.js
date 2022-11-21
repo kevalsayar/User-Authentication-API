@@ -11,6 +11,7 @@ const requestMiddleware = function () {
    */
   const validateReqBody = function (reqSchema) {
     return (req, res, next) => {
+      console.log(req.headers);
       if (req.body) {
         const { error } = reqSchema.validate(req.body);
         if (error) {
